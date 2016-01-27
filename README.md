@@ -1,4 +1,5 @@
 Super credit goes to all the sm5 devs who actually added features worth using
+Special super credit to ca25nada for hand holding me through dumb stuff
 
 Transcendence is a simple adaptation of ca25nada's spawncamping-wallhack theme
 that focuses on providing a minimalist and configureless interface geared purely
@@ -24,7 +25,7 @@ Options/Preferences----
 Overall: Defaults set to the settings that "competitive" players generally use
 
 Preferences.ini stuff
-***the PrefsOverride.lua file in the scripts folder will autoset these prefs upon game start
+***the PrefsOverride.lua file in the scripts folder will autoset these prefs upon theme initialization
 - BGBrightness to 0
 - Center1Player to 1
 - DelayedBack to 0

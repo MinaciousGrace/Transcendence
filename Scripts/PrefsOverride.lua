@@ -1,4 +1,4 @@
--- THESE WILL OVERRIDE SETTINGS IN PREFERENCES.INI UPON GAME LOAD
+-- THESE WILL OVERRIDE SETTINGS IN PREFERENCES.INI UPON THEME INITIALIZATION
 
 -- someone please explain to me why this is the only way that works
 if themeConfig:get_data().global.Transcended == 0 then
