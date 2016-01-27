@@ -44,8 +44,10 @@ Gameplay/player options stuff
 - Error bar enabled by default but relocated to just under the combo display for "ease of access"
 - Combo moved slightly to the right to more evenly distribute numbers between both sides of the notefield
 - Cmod increments changed to 50/1 default
-- Default mini size set to 29% and removed the excessive number of options, set custom values in metrics if you want to
+- Default mini size set to 29% and removed the excessive number of options, set custom values in metrics if you want to (default remains no mini though)
 - Reorganized rates, standard 1-2 at 0.1 increments are accessed by scrolling to the right, and 0.05 increments are left
 
 Other stuff----
 stuff
+
+eval screen needs the most work atm
