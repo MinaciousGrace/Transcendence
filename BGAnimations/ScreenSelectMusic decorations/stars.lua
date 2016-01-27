@@ -677,6 +677,7 @@ local function Update(self)
 		if (isOver(self:GetChildren().StatFrame1P:GetChildren().FrameMouseOver1P) and self:GetChildren().StatFrame1P:GetVisible()) then
 			self:GetChild("NearbyGrade"):visible(true)
 			self:GetChild("NearbyGrade"):GetChild("NearbyGradeP1"):visible(true)
+			self:GetChild("NearbyGrade"):GetChild("NearbyGradeP2"):visible(false)
 	    self:GetChild("NearbyGrade"):xy(INPUTFILTER:GetMouseX(),INPUTFILTER:GetMouseY())
 	    else
 	    	self:GetChild("NearbyGrade"):visible(false)
