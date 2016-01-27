@@ -14,11 +14,11 @@ local pn = GAMESTATE:GetEnabledPlayers()[1]
 local maxOffsetRange = 0.18 --timing range to show in seconds. 0.18 for upto bads, 0.135 for goods, 0.09 for greats, etc.
 local barcount = 300 -- Number of bars to initialize.
 local frameX = SCREEN_CENTER_X -- X Positon (Center of the bar)
-local frameY = SCREEN_BOTTOM-35 -- Y Positon (Center of the bar)
-local frameHeight = 10 -- Height of the bar
+local frameY = SCREEN_BOTTOM-187 -- Y Positon (Center of the bar)
+local frameHeight = 5 -- Height of the bar
 local frameWidth = capWideScale(get43size(300),300) -- Width of the bar
 local tickWidth = 2 -- Width of the ticks
-local tickDuration = 5 -- Time duration in seconds before the ticks fade out
+local tickDuration = 4 -- Time duration in seconds before the ticks fade out
 --=======================================
 
 
@@ -79,7 +79,7 @@ if enabled then
 	};
 
 	t[#t+1] = Def.Quad{
-		InitCommand=cmd(xy,frameX,frameY;zoomto,frameWidth,frameHeight;diffuse,color("#666666");diffusealpha,0.7);
+		InitCommand=cmd(xy,frameX,frameY;zoomto,frameWidth,frameHeight;diffuse,color("#666666");diffusealpha,0);
 	};
 
 	-- Initialize a bunch of bars
@@ -89,14 +89,14 @@ if enabled then
 
 
 	t[#t+1] = Def.Quad{
-		InitCommand=cmd(xy,frameX,frameY;zoomto,2,frameHeight;diffuse,color("#FFFFFF");diffusealpha,0.5);
+		InitCommand=cmd(xy,frameX,frameY;zoomto,2,frameHeight;diffuse,color("#000000");diffusealpha,0);
 	};
 	--[[
 	t[#t+1] = Def.Quad{
-		InitCommand=cmd(xy,frameX+1-frameWidth/2,frameY;zoomto,2,frameHeight+4;diffuse,color("#FFFFFF");diffusealpha,0.5);
+		InitCommand=cmd(xy,frameX+1-frameWidth/2,frameY;zoomto,2,frameHeight+4;diffuse,color("#000000");diffusealpha,0);
 	};
 	t[#t+1] = Def.Quad{
-		InitCommand=cmd(xy,frameX-1+frameWidth/2,frameY;zoomto,2,frameHeight+4;diffuse,color("#FFFFFF");diffusealpha,0.5);
+		InitCommand=cmd(xy,frameX-1+frameWidth/2,frameY;zoomto,2,frameHeight+4;diffuse,color("#000000");diffusealpha,0);
 	};
 	--]]
 	t[#t+1] = LoadFont("Common Normal") .. {

@@ -7,9 +7,9 @@ local stepsP2 = 0
 
 if not GAMESTATE:IsCourseMode() then
 	judgeTableP1 = getJudgeTableST(PLAYER_1)
-	stepsP1 = GAMESTATE:GetCurrentSteps(PLAYER_1):GetRadarValues(PLAYER_1):GetValue('RadarCategory_TapsAndHolds')
+	stepsP1 = getMaxNotesST(PLAYER_1)
 	judgeTableP2 = getJudgeTableST(PLAYER_2)
-	stepsP2 = GAMESTATE:GetCurrentSteps(PLAYER_2):GetRadarValues(PLAYER_2):GetValue('RadarCategory_TapsAndHolds')
+	stepsP2 = getMaxNotesST(PLAYER_2)
 end;
 
 local cells = themeConfig:get_data().eval.JudgmentBarCellCount / GAMESTATE:GetNumPlayersEnabled()
@@ -78,11 +78,11 @@ if GAMESTATE:GetNumPlayersEnabled() >= 1 and (not GAMESTATE:IsCourseMode()) then
 
 	for k,v in ipairs(cellTable) do
 		t[#t+1] = Def.Quad{
-			InitCommand=cmd(xy,0,cellY;zoomto,(maxCellWidth/cells)-2,cellHeight;halign,0;valign,0;diffuse,judgeColors[v];diffusealpha,0;sleep,k/cells;smooth,1;x,math.random(0,maxCellWidth);diffusealpha,0.2;smooth,0.5;x,((k-1)*maxCellWidth/cells)+cellX;diffusealpha,1);
+			InitCommand=cmd(xy,0,cellY;zoomto,(maxCellWidth/cells)-2,cellHeight;halign,0;valign,0;diffuse,judgeColors[v];diffusealpha,0;sleep,k/cells;smooth,1;x,math.random(0,maxCellWidth);diffusealpha,0.2;smooth,0.5;x,((k-1)*maxCellWidth/cells)+cellX;diffusealpha,0.5);
 			BeginCommand=function(self)
 				if v == 1 then
 					self:diffuseshift()
-					self:effectcolor1(color("#ffffff"))
+					self:effectcolor1(judgeColors[v])
 					self:effectcolor2(judgeColors[v])
 					self:effectperiod(0.3)
 				end;

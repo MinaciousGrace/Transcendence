@@ -4,31 +4,12 @@ if GAMESTATE:GetNumPlayersEnabled() == 1 and themeConfig:get_data().eval.ScoreBo
 	t[#t+1] = LoadActor("scoreboard")
 end;
 
-if themeConfig:get_data().eval.CurrentTimeEnabled then
-	t[#t+1] = LoadActor("currenttime")
-end;
-
 if themeConfig:get_data().eval.JudgmentBarEnabled then
 	t[#t+1] = LoadActor("adefaultmoreripoff")
 end;
 
 --t[#t+1] = LoadActor("mousetest")
 --t[#t+1] = LoadActor("soundtest")
-
-t[#t+1] = Def.ActorFrame{
-	LoadFont("Common Normal")..{
-		InitCommand=cmd(xy,20,140;zoom,0.4;maxwidth,100/0.4;halign,0;);
-		BeginCommand=function(self)
-			self:settextf("Timing Difficulty: %d",GetTimingDifficulty())
-		end;
-	};
-	LoadFont("Common Normal")..{
-		InitCommand=cmd(xy,20,155;zoom,0.4;maxwidth,100/0.4;halign,0;);
-		BeginCommand=function(self)
-			self:settextf("Life Difficulty: %d",GetLifeDifficulty())
-		end;
-	};
-};
 
 t[#t+1] = LoadFont("Common Normal")..{
 	InitCommand=cmd(xy,SCREEN_CENTER_X,135;zoom,0.4;maxwidth,400/0.4);
@@ -53,67 +34,10 @@ local function GraphDisplay( pn )
 				self:Set( ss, ss:GetPlayerStageStats(pn) );
 				self:diffusealpha(0.7);
 				self:GetChild("Line"):diffusealpha(0)
-				if GAMESTATE:GetNumPlayersEnabled() == 1 and GAMESTATE:IsPlayerEnabled(PLAYER_2)then
-					self:x(-(SCREEN_CENTER_X*1.65)+(SCREEN_CENTER_X*0.35))
-				end;
+				self:zoom(0.8)
+				self:xy(-22,8)
 			end
 		};
-		LoadFont("Common Large")..{
-			InitCommand=cmd(xy,-SCREEN_CENTER_X*0.30,15;zoom,0.7;maxwidth,70/0.8;halign,0;);
-			BeginCommand=function(self) 
-				self:settext(THEME:GetString("Grade",ToEnumShortString(pss:GetGrade()))) 
-				if GAMESTATE:GetNumPlayersEnabled() == 1 and GAMESTATE:IsPlayerEnabled(PLAYER_2)then
-					self:x(-(SCREEN_CENTER_X*1.65)+(SCREEN_CENTER_X*0.35)-(SCREEN_CENTER_X*0.30))
-				end;
-				if GAMESTATE:GetNumPlayersEnabled() == 2 and pn == PLAYER_2 then
-					self:x(SCREEN_CENTER_X*0.30)
-					self:halign(1)
-				end;
-				self:glowshift()
-				self:effectcolor1(getGradeColor(pss:GetGrade()))
-				self:effectcolor2(color("1,1,1,0"))
-			end;
-		};
-		LoadFont("Common Normal")..{
-			InitCommand=cmd(xy,WideScale(get43size(140),140)-5,-35;zoom,0.4;halign,1;valign,0;diffusealpha,0.7;);
-			BeginCommand=function(self)
-				local text = ""
-				text = string.format("Life: %.0f%%",pss:GetCurrentLife()*100)
-				if pss:GetCurrentLife() == 0 then
-					text = string.format("%s\n%.2fs Survived",text,pss:GetAliveSeconds())
-				end
-				if getPauseCount() > 0 then
-					text = string.format("%s\nPaused %d Time(s)",text,getPauseCount())
-				end
-				self:settext(text)
-				if GAMESTATE:GetNumPlayersEnabled() == 1 and GAMESTATE:IsPlayerEnabled(PLAYER_2)then
-					self:x(-(SCREEN_CENTER_X*1.65)+(SCREEN_CENTER_X*0.35)+WideScale(get43size(140),140)-5)
-				end;
-				if GAMESTATE:GetNumPlayersEnabled() == 2 and pn == PLAYER_2 then
-					self:x(SCREEN_CENTER_X*0.30)
-					self:halign(1)
-				end;
-			end;
-		};
-		LoadFont("Common Normal")..{
-			InitCommand=cmd(xy,WideScale(get43size(140),140)-5,30;zoom,0.4;halign,1;valign,0;diffusealpha,0.7;);
-			BeginCommand=function(self) 
-				local steps = GAMESTATE:GetCurrentSteps(pn);
-				local notes = 0
-				if steps ~= nil then
-					notes = steps:GetRadarValues(pn):GetValue("RadarCategory_Notes")
-				end;
-				self:settextf("%d Notes",notes)
-				if GAMESTATE:GetNumPlayersEnabled() == 1 and GAMESTATE:IsPlayerEnabled(PLAYER_2)then
-					self:x(-(SCREEN_CENTER_X*1.65)+(SCREEN_CENTER_X*0.35)+WideScale(get43size(140),140)-5)
-				end;
-				if GAMESTATE:GetNumPlayersEnabled() == 2 and pn == PLAYER_2 then
-					self:x(SCREEN_CENTER_X*0.30)
-					self:halign(1)
-				end;
-			end;
-		};
-
 	};
 	return t;
 end
@@ -125,9 +49,8 @@ local function ComboGraph( pn )
 			BeginCommand=function(self)
 				local ss = SCREENMAN:GetTopScreen():GetStageStats();
 				self:Set( ss, ss:GetPlayerStageStats(pn) );
-				if GAMESTATE:GetNumPlayersEnabled() == 1 and GAMESTATE:IsPlayerEnabled(PLAYER_2) then
-					self:x(-(SCREEN_CENTER_X*1.65)+(SCREEN_CENTER_X*0.35))
-				end;
+        self:zoom(0.8)
+        self:xy(-22,-2)
 			end
 		};
 	};
@@ -160,22 +83,28 @@ function scoreBoard(pn,position)
 		InitCommand=cmd(xy,frameX-5,frameY;zoomto,frameWidth+10,220;halign,0;valign,0;diffuse,color("#333333CC"););
 	};
 
-
-
 	t[#t+1] = Def.Quad{
-		InitCommand=cmd(xy,frameX,frameY+55;zoomto,frameWidth,2;halign,0;)
+		InitCommand=cmd(xy,frameX,frameY+55;zoomto,frameWidth,2;halign,0;diffuse,getMainColor('highlight');diffusealpha,0.5);
 	};
 
-	t[#t+1] = LoadFont("Common Normal")..{
-		InitCommand=cmd(xy,frameX+frameWidth,frameY+0;zoom,0.5;halign,1;valign,1);
+	t[#t+1] = LoadFont("Common Large")..{
+		InitCommand=cmd(xy,18,frameY;zoom,0.75;halign,0;valign,1;maxwidth,80);
 		BeginCommand=cmd(glowshift;effectcolor1,color("1,1,1,0.05");effectcolor2,color("1,1,1,0");effectperiod,2;queuecommand,"Set");
 		SetCommand=function(self) 
 			local steps = GAMESTATE:GetCurrentSteps(pn)
-			local diff = getDifficulty(steps:GetDifficulty())
-			local stype = ToEnumShortString(steps:GetStepsType()):gsub("%_"," ")
-			local meter = steps:GetMeter()
-			self:settext(stype.." "..diff.." "..meter)
-			self:diffuse(getDifficultyColor(diff))
+			local diff = steps:GetMeter()
+			self:settext(diff)
+			if diff < 20 then
+				self:diffuse(getVividDifficultyColor('Difficulty_Beginner'))
+			elseif diff < 35 then
+				self:diffuse(getVividDifficultyColor('Difficulty_Easy'))
+			elseif diff < 50 then
+				self:diffuse(getVividDifficultyColor('Difficulty_Medium'))
+			elseif diff < 65 then
+				self:diffuse(getVividDifficultyColor('Difficulty_Hard'))
+			else
+				self:diffuse(getVividDifficultyColor('Difficulty_Challenge'))
+			end;
 		end;
 	};
 
@@ -290,6 +219,18 @@ function scoreBoard(pn,position)
 			end
 		end;
 	};
+	
+		t[#t+1] = LoadFont("Common Large")..{
+		InitCommand=cmd(xy,frameX+187,frameY-14;zoom,0.65;halign,1;maxwidth,200);
+		BeginCommand=cmd(queuecommand,"Set");
+		SetCommand=function(self) 
+			local score = getCurScoreST(pn,0)
+			local maxScore = getMaxScoreST(pn,0)
+			local percentText = string.format("%05.2f%%",math.floor((score/maxScore)*10000)/100)
+			self:settextf("%s",percentText)
+			self:diffuse(getGradeColor(pss:GetGrade()))
+		end;
+	};
 
 	t[#t+1] = LoadFont("Common Normal")..{
 		InitCommand=cmd(xy,frameX+50+(frameWidth-80)+10,frameY+28;zoom,0.30;maxwidth,30/0.3);
@@ -384,7 +325,7 @@ function scoreBoard(pn,position)
 		InitCommand=cmd(xy,frameX+5,frameY+63;zoom,0.40;halign,0;maxwidth,frameWidth/0.4);
 		BeginCommand=cmd(queuecommand,"Set");
 		SetCommand=function(self) 
-			self:settext(pss:GetHighScore():GetModifiers())
+			self:settext(GAMESTATE:GetPlayerState(PLAYER_2):GetPlayerOptionsString('ModsLevel_Current'))
 		end;
 	};
 
@@ -458,14 +399,16 @@ function scoreBoard(pn,position)
 			self:settextf("Fakes %03d/%03d",pss:GetRadarActual():GetValue("RadarCategory_Fakes"),pss:GetRadarPossible():GetValue("RadarCategory_Fakes"))
 		end;
 	};
-
-	t[#t+1] = LoadFont("Common Normal")..{
-		InitCommand=cmd(xy,frameX,frameY+230;zoom,0.35;halign,0);
-		BeginCommand=cmd(queuecommand,"Set");
-		SetCommand=function(self) 
-			self:settextf("Unstable Rate: %0.1f",getUnstableRateST(pn))
+	
+	t[#t+1] = Def.ActorFrame{
+	LoadFont("Common Normal")..{
+		InitCommand=cmd(xy,frameX,frameY+230;zoom,0.4;halign,0;);
+		BeginCommand=function(self)
+			self:settextf("Judge: %d",GetTimingDifficulty())
 		end;
-	};
+    };
+  };
+
 
 
 	return t

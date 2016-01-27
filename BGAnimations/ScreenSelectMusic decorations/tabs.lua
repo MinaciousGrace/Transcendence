@@ -52,16 +52,17 @@ function tabs(index)
 				self:y(frameY)
 				self:diffusealpha(1)
 			else -- otherwise "Hide" them
-				self:y(frameY+5)
-				self:diffusealpha(0.9)
+				self:y(frameY)
+				self:diffusealpha(0.65)
 			end;
 		end;
 		TabChangedMessageCommand=cmd(queuecommand,"Set");
 		PlayerJoinedMessageCommand=cmd(queuecommand,"Set");
 	};
+
 	t[#t+1] = Def.Quad{
 		Name="TabBG";
-		InitCommand=cmd(valign,0;zoomto,frameWidth,20);
+		InitCommand=cmd(y,2;valign,0;zoomto,frameWidth,20;diffusecolor,getMainColor('frames');diffusealpha,0.85);
 		MouseLeftClickMessageCommand=function(self)
 			if isOver(self) then
 				setTabIndex(index-1)
@@ -71,12 +72,12 @@ function tabs(index)
 	};
 		
 	t[#t+1] = LoadFont("Common Normal") .. {
-		InitCommand=cmd(y,4;valign,0;zoom,0.45;diffuse,getMainColor(1));
+		InitCommand=cmd(y,5;valign,0;zoom,0.45;diffuse,getMainColor('positive'));
 		BeginCommand=cmd(queuecommand,"Set");
 		SetCommand=function(self)
 			self:settext(tabNames[index])
 			if isTabEnabled(index) then
-				self:diffuse(getMainColor(1))
+				self:diffuse(getMainColor('positive'))
 			else
 				self:diffuse(color("#666666"))
 			end;

@@ -1,3 +1,7 @@
+
+
+--[[ This Part is deprecated. See 01 color_config.lua
+
 local themeColors = {
 
 	songlength = {
@@ -37,11 +41,8 @@ local themeColors = {
 		Beginner	= color("#66ccff"),		
 		Easy		= color("#099948"),		-- green
 		Medium		= color("#ddaa00"),		-- yellow
-		Normal		= color("#ddaa00"),		-- yellow
 		Hard		= color("#ff6666"),		-- red
 		Challenge 		= color("#c97bff"),	-- Purple
-		Insane 		= color("#c97bff"),
-		Expert 		= color("#c97bff"),	
 		Edit 		= color("0.8,0.8,0.8,1"),	-- gray
 		Couple		= color("#ed0972"),			-- hot pink
 		Routine		= color("#ff9a00")			-- orange
@@ -62,8 +63,6 @@ local themeColors = {
 		Normal		= color("#ddaa00"),		-- yellow
 		Hard		= color("#ff0000"),		-- red
 		Challenge 		= color("#cc66ff"),	-- Purple
-		Insane 		= color("#cc66ff"),	
-		Expert 		= color("#cc66ff"),
 		Edit 		= color("0.8,0.8,0.8,1"),	-- gray
 		Couple		= color("#ed0972"),			-- hot pink
 		Routine		= color("#ff9a00")			-- orange
@@ -137,3 +136,5 @@ function offsetToJudgeColor(offset)
 end;
 
 function TapNoteScoreToColor(tns) return themeColors.judgeColor[tns] or color("#ffffff"); end;
+
+--]]

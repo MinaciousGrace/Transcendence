@@ -1,12 +1,13 @@
 local t = Def.ActorFrame{}
 t[#t+1] = LoadActor("../_frame");
 t[#t+1] = LoadActor("../_avatar");
+t[#t+1] = LoadActor("currenttime");
 
 --t[#t+1] = LoadActor("temp");
 
 --what the settext says
 t[#t+1] = LoadFont("Common Large")..{
-	InitCommand=cmd(xy,5,32;halign,0;valign,1;zoom,0.55;diffuse,getMainColor(1);settext,"Results:";);
+	InitCommand=cmd(xy,5,32;halign,0;valign,1;zoom,0.55;diffuse,getMainColor('positive');settext,"Results:";);
 }
 
 --Group folder name
@@ -15,13 +16,9 @@ local frameHeight = 20
 local frameX = SCREEN_WIDTH-5
 local frameY = 15
 
-t[#t+1] = Def.Quad{
-	InitCommand=cmd(xy,frameX,frameY;halign,1;zoomto,frameWidth,frameHeight;diffuse,getMainColor(1););
-};
-
-t[#t+1] = LoadFont("Common Normal") .. {
-	InitCommand=cmd(xy,frameX-frameWidth+5,frameY;halign,0;zoom,0.45;maxwidth,(frameWidth-10)/0.45);
-	BeginCommand=cmd(queuecommand,"Set");
+t[#t+1] = LoadFont("Common Large") .. {
+	InitCommand=cmd(xy,frameX,frameY+5;halign,1;zoom,0.55;maxwidth,(frameWidth-40)/0.35);
+	BeginCommand=cmd(queuecommand,"Set";diffuse,getMainColor('positive'));
 	SetCommand=function(self)
 		local song = GAMESTATE:GetCurrentSong()
 		local course = GAMESTATE:GetCurrentCourse()

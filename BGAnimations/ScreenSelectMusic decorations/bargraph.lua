@@ -1,18 +1,18 @@
+--TODO: refactor this mess
+
 t = Def.ActorFrame{}
 
-local barXP1 = 157
-local barYP1 = 170+capWideScale(get43size(120),120)
+local barXP1 = 123
+local barYP1 = 280+capWideScale(get43size(120),120)
 
 local playerDistY = 95
 
 local barXP2 = 157
 local barYP2 = barYP1+playerDistY
 
-
-local barWidth = capWideScale(get43size(300),300)-(barXP1-capWideScale(get43size(barXP1),barXP1))
+local barWidth = capWideScale(get43size(337),337)-(barXP1-capWideScale(get43size(barXP1),barXP1))
 local barHeight = 4
-local showLetters = false
-local animationDelay = 0.8
+local animationDelay = 0
 local animationLength = 1
 
 local hsTableP1
@@ -84,7 +84,7 @@ t[#t+1] = Def.ActorFrame{
 			if maxscore == 0 or maxscore == nil then
 				maxscore = 1
 			end;
-			self:zoomx(0)
+			--self:zoomx(0)
 			self:sleep(animationDelay)
 			self:smooth(animationLength)
 			self:diffuse(TapNoteScoreToColor("TapNoteScore_Miss"))
@@ -113,7 +113,7 @@ t[#t+1] = Def.ActorFrame{
 			if maxscore == 0 or maxscore == nil then
 				maxscore = 1
 			end;
-			self:zoomx(0)
+			--self:zoomx(0)
 			self:sleep(animationDelay)
 			self:smooth(animationLength)
 			self:diffuse(TapNoteScoreToColor("TapNoteScore_W5"))
@@ -141,7 +141,7 @@ t[#t+1] = Def.ActorFrame{
 			if maxscore == 0 or maxscore == nil then
 				maxscore = 1
 			end;
-			self:zoomx(0)
+			--self:zoomx(0)
 			self:sleep(animationDelay)
 			self:smooth(animationLength)
 			self:diffuse(TapNoteScoreToColor("TapNoteScore_W4"))
@@ -167,7 +167,7 @@ t[#t+1] = Def.ActorFrame{
 			if maxscore == 0 or maxscore == nil then
 				maxscore = 1
 			end;
-			self:zoomx(0)
+			--self:zoomx(0)
 			self:sleep(animationDelay)
 			self:smooth(animationLength)
 			self:diffuse(TapNoteScoreToColor("TapNoteScore_W3"))
@@ -193,7 +193,7 @@ t[#t+1] = Def.ActorFrame{
 			if maxscore == 0 or maxscore == nil then
 				maxscore = 1
 			end;
-			self:zoomx(0)
+			--self:zoomx(0)
 			self:sleep(animationDelay)
 			self:smooth(animationLength)
 			self:diffuse(TapNoteScoreToColor("TapNoteScore_W2"))
@@ -211,17 +211,16 @@ t[#t+1] = Def.ActorFrame{
 
 	Def.Quad{
 		InitCommand=cmd(zoomto,barWidth,barHeight;halign,0);
-		BeginCommand=cmd(glowshift;effectcolor1,color("1,1,1,0.2");effectcolor2,color("1,1,1,0.5");queuecommand,"Set");
 		SetCommand=function(self)
 			local notes = getMaxNotes(PLAYER_1)
 			local judge = getScoreTapNoteScore(topScoreP1,"TapNoteScore_W1")
 			if maxscore == 0 or maxscore == nil then
 				maxscore = 1
 			end;
-			self:zoomx(0)
+			--self:zoomx(0)
 			self:sleep(animationDelay)
 			self:smooth(animationLength)
-			self:diffuse(getMainColor(1))
+			self:diffuse(getMainColor('highlight'))
 			self:zoomx((judge/notes)*barWidth)
 		end;
 		CurrentSongChangedMessageCommand=function(self)
@@ -277,7 +276,7 @@ t[#t+1] = Def.ActorFrame{
 			if maxscore == 0 or maxscore == nil then
 				maxscore = 1
 			end;
-			self:zoomx(0)
+			--self:zoomx(0)
 			self:sleep(animationDelay)
 			self:smooth(animationLength)
 			self:diffuse(TapNoteScoreToColor("TapNoteScore_Miss"))
@@ -306,7 +305,7 @@ t[#t+1] = Def.ActorFrame{
 			if maxscore == 0 or maxscore == nil then
 				maxscore = 1
 			end;
-			self:zoomx(0)
+			--self:zoomx(0)
 			self:sleep(animationDelay)
 			self:smooth(animationLength)
 			self:diffuse(TapNoteScoreToColor("TapNoteScore_W5"))
@@ -334,7 +333,7 @@ t[#t+1] = Def.ActorFrame{
 			if maxscore == 0 or maxscore == nil then
 				maxscore = 1
 			end;
-			self:zoomx(0)
+			--self:zoomx(0)
 			self:sleep(animationDelay)
 			self:smooth(animationLength)
 			self:diffuse(TapNoteScoreToColor("TapNoteScore_W4"))
@@ -360,7 +359,7 @@ t[#t+1] = Def.ActorFrame{
 			if maxscore == 0 or maxscore == nil then
 				maxscore = 1
 			end;
-			self:zoomx(0)
+			--self:zoomx(0)
 			self:sleep(animationDelay)
 			self:smooth(animationLength)
 			self:diffuse(TapNoteScoreToColor("TapNoteScore_W3"))
@@ -386,7 +385,7 @@ t[#t+1] = Def.ActorFrame{
 			if maxscore == 0 or maxscore == nil then
 				maxscore = 1
 			end;
-			self:zoomx(0)
+			--self:zoomx(0)
 			self:sleep(animationDelay)
 			self:smooth(animationLength)
 			self:diffuse(TapNoteScoreToColor("TapNoteScore_W2"))
@@ -411,10 +410,10 @@ t[#t+1] = Def.ActorFrame{
 			if maxscore == 0 or maxscore == nil then
 				maxscore = 1
 			end;
-			self:zoomx(0)
+			--self:zoomx(0)
 			self:sleep(animationDelay)
 			self:smooth(animationLength)
-			self:diffuse(getMainColor(1))
+			self:diffuse(getMainColor('highlight'))
 			self:zoomx((judge/notes)*barWidth)
 		end;
 		CurrentSongChangedMessageCommand=function(self)

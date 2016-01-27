@@ -2,7 +2,7 @@ local t = Def.ActorFrame{};
 
 t[#t+1] = LoadFont("Common Normal") .. {
 	Name = "currentTime";
-	InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_BOTTOM-75;zoom,0.45;settext,"");
+	InitCommand=cmd(xy,850,475;halign,1;valign,1;zoom,0.45;);
 };
 
 local function Update(self)
@@ -13,6 +13,7 @@ local function Update(self)
 	local minute = Minute()
 	local second = Second()
 	self:GetChild("currentTime"):settextf("%04d-%02d-%02d %02d:%02d:%02d",year,month,day,hour,minute,second)
+	self:diffuse(getMainColor('positive'))
 end;
 
 t.InitCommand=cmd(SetUpdateFunction,Update)

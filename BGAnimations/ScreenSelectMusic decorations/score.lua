@@ -99,11 +99,11 @@ t[#t+1] = Def.Quad{
 };
 
 t[#t+1] = Def.Quad{
-	InitCommand=cmd(xy,frameX,frameY;zoomto,frameWidth,offsetY;halign,0;valign,0;diffuse,color("#FFFFFF"));
+	InitCommand=cmd(xy,frameX,frameY;zoomto,frameWidth,offsetY;halign,0;valign,0;diffuse,getMainColor('frames');diffusealpha,0.5);
 };
 
 t[#t+1] = LoadFont("Common Normal")..{
-	InitCommand=cmd(xy,frameX+5,frameY+offsetY-9;zoom,0.6;halign,0;diffuse,getMainColor(1));
+	InitCommand=cmd(xy,frameX+5,frameY+offsetY-9;zoom,0.6;halign,0;diffuse,getMainColor('positive'));
 	BeginCommand=cmd(settext,"Score Info")
 };
 
@@ -237,6 +237,21 @@ t[#t+1] = LoadFont("Common Normal")..{
 };
 
 t[#t+1] = LoadFont("Common Normal")..{
+	Name="Mods";
+	InitCommand=cmd(xy,frameX+offsetX,frameY+frameHeight-10;zoom,0.4;halign,0);
+	SetCommand=function(self)
+		if ghostDataExists(pn,score) then
+			self:settext("Ghost Data Available")
+			self:diffuse(getMainColor('enabled'))
+		else
+			self:settext("Ghost Data Unavailable")
+			self:diffuse(getMainColor('disabled'))
+		end;
+	end;
+	ScoreUpdateMessageCommand=cmd(queuecommand,"Set");
+};
+
+t[#t+1] = LoadFont("Common Normal")..{
 	Name="StepsAndMeter";
 	InitCommand=cmd(xy,frameX+frameWidth-offsetX,frameY+offsetY+10;zoom,0.5;halign,1;);
 	SetCommand=function(self)
@@ -247,7 +262,7 @@ t[#t+1] = LoadFont("Common Normal")..{
 			local meter = steps:GetMeter()
 			if update then
 				self:settext(stype.." "..diff.." "..meter)
-				self:diffuse(getDifficultyColor(diff))
+				self:diffuse(getDifficultyColor(GetCustomDifficulty(steps:GetStepsType(),steps:GetDifficulty())))
 			end;
 		end;
 	end;
@@ -268,7 +283,7 @@ t[#t+1] = LoadFont("Common Normal")..{
 
 t[#t+1] = Def.Quad{
 	Name="ScrollBar";
-	InitCommand=cmd(xy,frameX+frameWidth,frameY+frameHeight;zoomto,4,0;halign,1;valign,1;diffuse,getMainColor(1));
+	InitCommand=cmd(xy,frameX+frameWidth,frameY+frameHeight;zoomto,4,0;halign,1;valign,1;diffuse,getMainColor('highlight');diffusealpha,0.5);
 	ScoreUpdateMessageCommand=cmd(queuecommand,"Set");
 	SetCommand=function(self,params)
 		self:finishtweening()
@@ -296,7 +311,7 @@ local function makeText(index)
 				if index <= #rates then
 					self:settextf("%s (%d)",rates[index],count)
 					if index == rateIndex then
-						self:diffuse(getMainColor(1))
+						self:diffuse(getMainColor('positive'))
 					else
 						self:diffuse(color("#FFFFFF"))
 					end;

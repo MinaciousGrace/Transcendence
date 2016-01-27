@@ -2,16 +2,17 @@
 local defaultConfig = {
 	--Avatar = "_fallback.png",
 	ScreenFilter = 0,
-	JudgeType = 0,
+	JudgeType = 1,
 	AvgScoreType = 0,
-	GhostScoreType = 0,
-	GhostTarget = 1,
-	ErrorBar = false,
+	GhostScoreType = 1,
+	GhostTarget = 93,
+	ErrorBar = true,
 	PaceMaker = false,
 	LaneCover = 0, -- soon to be changed to: 0=off, 1=sudden, 2=hidden
 	LaneCoverHeight = 0,
-	NPSDisplay = false,
-	CBHighlight = false,
+	NPSDisplay = true,
+	NPSGraph = true,
+	CBHighlight = true,
 }
 
 playerConfig = create_setting("playerConfig", "playerConfig.lua", defaultConfig, -1)

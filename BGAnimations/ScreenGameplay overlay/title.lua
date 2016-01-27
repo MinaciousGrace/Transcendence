@@ -1,7 +1,7 @@
 local t = Def.ActorFrame{}
 
 t[#t+1] = Def.Quad{
-	InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_CENTER_Y-40;zoomto,400,50;diffuse,getMainColor(1);fadeleft,0.4;faderight,0.4;diffusealpha,0);
+	InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_CENTER_Y-40;zoomto,400,50;diffuse,getMainColor('highlight');fadeleft,0.4;faderight,0.4;diffusealpha,0);
 	OnCommand=cmd(smooth,0.5;diffusealpha,0.7;sleep,1;smooth,0.3;y,SCREEN_CENTER_Y-20;smooth,0.4;diffusealpha,0;y,SCREEN_TOP-500;);
 };
 
@@ -22,5 +22,6 @@ t[#t+1] = LoadFont("Common Normal") .. {
 	BeginCommand=cmd(settext,GAMESTATE:GetCurrentSong():GetDisplayArtist());
 	OnCommand=cmd(smooth,0.5;diffusealpha,1;sleep,1;smooth,0.3;y,SCREEN_CENTER_Y-5;smooth,0.4;diffusealpha,0;y,SCREEN_TOP-500;);
 };
+
 
 return t

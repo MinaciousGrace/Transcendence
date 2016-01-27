@@ -4,7 +4,6 @@ local t = Def.ActorFrame{}
 t[#t+1] = LoadActor("tabs")
 --local t = LoadFallbackB();
 t[#t+1] = LoadActor("songinfo");
-t[#t+1] = LoadActor("currenttime");
 t[#t+1] = LoadActor("stars");
 t[#t+1] = LoadActor("simfile");
 t[#t+1] = LoadActor("score");

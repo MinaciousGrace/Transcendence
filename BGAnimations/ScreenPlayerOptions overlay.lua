@@ -245,15 +245,15 @@ t[#t+1] = Def.ActorFrame{
 
 --Frames
 t[#t+1] = Def.Quad{
-	InitCommand=cmd(xy,0,0;halign,0;valign,0;zoomto,SCREEN_WIDTH,topFrameHeight;diffuse,color("#FFFFFF"););
+	InitCommand=cmd(xy,0,0;halign,0;valign,0;zoomto,SCREEN_WIDTH,topFrameHeight;diffuse,color("#000000"););
 };
 t[#t+1] = Def.Quad{
-	InitCommand=cmd(xy,0,topFrameHeight;halign,0;valign,1;zoomto,SCREEN_WIDTH,borderWidth;diffuse,getMainColor(1));
+	InitCommand=cmd(xy,0,topFrameHeight;halign,0;valign,1;zoomto,SCREEN_WIDTH,borderWidth;diffuse,getMainColor('highlight');diffusealpha,0.5);
 };
 
 --t[#t+1] = LoadActor("_frame");
 t[#t+1] = LoadFont("Common Large")..{
-	InitCommand=cmd(xy,5,32;halign,0;valign,1;zoom,0.55;diffuse,getMainColor(1);settext,"Player Options:";);
+	InitCommand=cmd(xy,5,32;halign,0;valign,1;zoom,0.55;diffuse,getMainColor('positive');settext,"Player Options:";);
 }
 
 return t

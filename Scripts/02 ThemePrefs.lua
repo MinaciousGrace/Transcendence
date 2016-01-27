@@ -261,22 +261,23 @@ function NPSDisplay()
 	local t = {
 		Name = "NPSDisplay";
 		LayoutType = "ShowAllInRow";
-		SelectType = "SelectOne";
+		SelectType = "SelectMultiple";
 		OneChoiceForAllPlayers = false;
 		ExportOnChange = true;
-		Choices = { THEME:GetString('OptionNames','Off'),'On'};
+		Choices = {"NPS Display","NPS Graph"};
 		LoadSelections = function(self, list, pn)
-			local pref = playerConfig:get_data(pn_to_profile_slot(pn)).NPSDisplay
-			if pref then
-				list[2] = true;
-			else
-				list[1] = true;
-			end;
+			local npsDisplay = playerConfig:get_data(pn_to_profile_slot(pn)).NPSDisplay
+			local npsGraph = playerConfig:get_data(pn_to_profile_slot(pn)).NPSGraph
+			if npsDisplay then
+				list[1] = true
+			end
+			if npsGraph then 
+				list[2] = true
+			end
 		end;
 		SaveSelections = function(self, list, pn)
-			local value
-			value = list[2]
-			playerConfig:get_data(pn_to_profile_slot(pn)).NPSDisplay = value
+			playerConfig:get_data(pn_to_profile_slot(pn)).NPSDisplay = list[1]
+			playerConfig:get_data(pn_to_profile_slot(pn)).NPSGraph = list[2]
 			playerConfig:set_dirty(pn_to_profile_slot(pn))
 			playerConfig:save(pn_to_profile_slot(pn))
 		end;
@@ -633,6 +634,73 @@ function HelpMenu()
 	setmetatable( t, t );
 	return t;
 end	
+
+function MeasureLines()
+	local t = {
+		Name = "MeasureLines";
+		LayoutType = "ShowAllInRow";
+		SelectType = "SelectOne";
+		OneChoiceForAllPlayers = true;
+		ExportOnChange = true;
+		Choices = { "Off","On"};
+		LoadSelections = function(self, list, pn)
+			local pref = themeConfig:get_data().global.MeasureLines
+			if pref then
+				list[2] = true
+			else 
+				list[1] = true
+			end;
+		end;
+		SaveSelections = function(self, list, pn)
+			local value
+			if list[1] then
+				value = false
+			else
+				value = true
+			end;
+			themeConfig:get_data().global.MeasureLines = value
+			themeConfig:set_dirty()
+			themeConfig:save()
+			THEME:ReloadMetrics()
+		end;
+	};
+	setmetatable( t, t );
+	return t;
+end
+
+function ProgressBar()
+	local t = {
+		Name = "ProgressBar";
+		LayoutType = "ShowAllInRow";
+		SelectType = "SelectOne";
+		OneChoiceForAllPlayers = true;
+		ExportOnChange = true;
+		Choices = { "Off","Bottom", "Top",};
+		LoadSelections = function(self, list, pn)
+			local pref = themeConfig:get_data().global.ProgressBar
+			if pref then
+				list[pref+1] = true
+			end;
+		end;
+		SaveSelections = function(self, list, pn)
+			local value
+			if list[1] == true then
+				value = 0
+			elseif list[2] == true then
+				value = 1
+			else
+				value = 2;
+			end;
+			themeConfig:get_data().global.ProgressBar = value;
+			themeConfig:set_dirty();
+			themeConfig:save();
+		end;
+	};
+	setmetatable( t, t );
+	return t;
+end
+
+
 
 function NPSWindow()
 	local t = {

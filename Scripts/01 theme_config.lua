@@ -1,13 +1,17 @@
 local defaultConfig = {
 	global = {
-		DefaultScoreType = 2, -- 1 = MAX2 DP, 2 = Oni Percent Score, 3 = MIGS
-		TipType = 2, -- 1 = Hide,2=tips 3= random quotes phrases,
+		DefaultScoreType = 1, -- 1 = MAX2 DP, 2 = Oni Percent Score, 3 = MIGS
+		TipType = 1, -- 1 = Hide,2=tips 3= random quotes phrases,
 		SongBGEnabled = true, 
-		SongBGMouseEnabled = true,
-		Particles = true,
+		SongBGMouseEnabled = false,
+		Particles = false,
 		--AvatarEnabled = true, -- Unused
 		RateSort = true,
-		HelpMenu = true,
+		HelpMenu = false,
+		ScoreBoardNag = false,
+		MeasureLines = true,
+		ProgressBar = 2, -- 0 = off, 1 bottom , 2 top
+		Transcended = 0
 	},
 	NPSDisplay = {
 		--Enabled = true, -- Player Controlled

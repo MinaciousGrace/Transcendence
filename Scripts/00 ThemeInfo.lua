@@ -1,9 +1,9 @@
 -- theme identification file
 
 themeInfo = {
-	Name = "spawncamping-wallhack",
-	Version = "0.01",
-	Date = "20151224",
+	Name = "Transcendence",
+	Version = "1.0",
+	Date = "20160111",
 };
 
 function getThemeName()

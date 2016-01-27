@@ -23,10 +23,10 @@ function gradestring(tier) --to be moved
 end;
 
 local lines = math.min(themeConfig:get_data().eval.ScoreBoardMaxEntry,PREFSMAN:GetPreference("MaxHighScoresPerListForPlayer")) -- number of scores to display
-local framex = SCREEN_WIDTH-capWideScale(get43size(270),270)
-local framey = 65
-local frameWidth = capWideScale(get43size(260),260)
-local spacing = 35
+local framex = SCREEN_WIDTH-capWideScale(get43size(230),230)
+local framey = 60
+local frameWidth = capWideScale(get43size(220),220)
+local spacing = 34
 
 
 local song = STATSMAN:GetCurStageStats():GetPlayedSongs()[1]
@@ -103,7 +103,7 @@ local function scoreitem(pn,index,scoreIndex,drawindex)
 
 		--Highlight quad for the current score
 		Def.Quad{
-			InitCommand=cmd(xy,framex,framey+(drawindex*spacing)-4;zoomto,frameWidth,30;halign,0;valign,0;diffuse,color("#66ccff");diffusealpha,0.2;diffuserightedge,color("#33333300"));
+			InitCommand=cmd(xy,framex,framey+(drawindex*spacing)-4;zoomto,frameWidth,30;halign,0;valign,0;diffuse,color("#ffffff");diffusealpha,0.3;diffuserightedge,color("#33333300"));
 			BeginCommand=function(self)
 				self:visible(GAMESTATE:IsHumanPlayer(pn) and equals);
 			end;
@@ -112,7 +112,7 @@ local function scoreitem(pn,index,scoreIndex,drawindex)
 		--Quad that will act as the bounding box for mouse rollover/click stuff.
 		Def.Quad{
 			Name="mouseOver";
-			InitCommand=cmd(xy,framex,framey+(drawindex*spacing)-4;zoomto,frameWidth,30;halign,0;valign,0;diffuse,getMainColor(1);diffusealpha,0.2;);
+			InitCommand=cmd(xy,framex,framey+(drawindex*spacing)-4;zoomto,frameWidth,30;halign,0;valign,0;diffuse,getMainColor('highlight');diffusealpha,0.05;);
 			BeginCommand=function(self)
 				self:visible(false);
 			end;
@@ -126,20 +126,6 @@ local function scoreitem(pn,index,scoreIndex,drawindex)
 			end;
 		};
 
-		--Animation(?) for ClearType lamps
-		Def.Quad{
-			InitCommand=cmd(xy,framex,framey+(drawindex*spacing)-4;zoomto,8,30;halign,0;valign,0;diffusealpha,0.3;diffuse,getClearTypeFromScore(pn,hsTable[index],2));
-			BeginCommand=function(self)
-				self:visible(GAMESTATE:IsHumanPlayer(pn));
-				self:diffuseramp()
-				self:effectoffset(0.03*(lines-drawindex))
-				self:effectcolor2(color("1,1,1,0.6"))
-				self:effectcolor1(color("1,1,1,0"))
-				self:effecttiming(2,1,0,0)
-			end;
-		};
-
-
 		--rank
 		LoadFont("Common normal")..{
 			InitCommand=cmd(xy,framex-8,framey+12+(drawindex*spacing);zoom,0.35;);
@@ -147,10 +133,7 @@ local function scoreitem(pn,index,scoreIndex,drawindex)
 				if #hsTable >= 1 then
 					self:settext(index)
 					if equals then
-						self:diffuseshift()
-						self:effectcolor1(color("#ffcccc"))
-						self:effectcolor2(color("#3399cc"))
-						self:effectperiod(0.1)
+						self:diffusecolor("#ffcccc")
 					else
 						self:stopeffect()
 					end;
@@ -258,15 +241,38 @@ end;
 
 --Text that sits above the scoreboard with some info
 t[#t+1] = LoadFont("Common normal")..{
-	InitCommand=cmd(xy,framex,framey-15;zoom,0.35;halign,0);
+	InitCommand=cmd(xy,SCREEN_CENTER_X,framey+95;zoom,0.5;halign,0.5;);
 	BeginCommand=function(self)
-		if scoreIndex ~= 0 then
-			self:settextf("Rank %d/%d (%d/%s Score slots used)",scoreIndex,(#hsTable),(#origTable),PREFSMAN:GetPreference("MaxHighScoresPerListForPlayer") or 0)
-		else
-			self:settextf("Out of rank (%d/%s Score slots used)",(#origTable),PREFSMAN:GetPreference("MaxHighScoresPerListForPlayer") or 0)
-		end;
+		local text = ""
+		text = getRate(score)
+		self:settext(text)
+		if text == "1.0x" then 
+      self:diffusealpha(0)
+		end
 	end;
 };
+
+
+if tonumber(PREFSMAN:GetPreference("MaxHighScoresPerListForPlayer")) ~= 3 then
+	themeConfig:get_data().global.ScoreBoardNag = false
+	themeConfig:set_dirty()
+	themeConfig:save()
+end
+
+if themeConfig:get_data().global.ScoreBoardNag and #origTable == tonumber(PREFSMAN:GetPreference("MaxHighScoresPerListForPlayer")) then
+	t[#t+1] = LoadFont("Common normal")..{
+		InitCommand=cmd(xy,framex+frameWidth/2,framey+4*spacing;zoom,0.30;valign,0;diffusealpha,0.8;maxwidth,frameWidth/0.30);
+		BeginCommand=function(self)
+			local text = string.format("You have reached the maximum number of saved scores for this chart."..
+							" \n Lower ranked scores will be removed as you save more scores.\n\n"..
+							" Please increase the values for 'Max Machine Scores' and \n'Max Player Scores'"..
+							" from the Arcade Options to raise this limit.\n\n\n"..
+							"This will no longer appear once the limit is set to any non-default value.\n(You may change back afterwards if you want)\n\n"..
+							"The current limit is %s. (Default is 3)",PREFSMAN:GetPreference("MaxHighScoresPerListForPlayer") or 0)
+			self:settext(text)
+		end;
+	}
+end
 
 --Update function for showing mouse rollovers
 local function Update(self)
@@ -280,11 +286,10 @@ local function Update(self)
 			self:GetChild("scoreItem"..tostring(i)):GetChild("judge"):visible(true)
 			self:GetChild("scoreItem"..tostring(i)):GetChild("date"):visible(false)
 			self:GetChild("scoreItem"..tostring(i)):GetChild("option"):visible(false)
-		end;
-	end;
-
-end; 
-t.InitCommand=cmd(SetUpdateFunction,Update);
+		end
+	end
+end
+t.InitCommand=cmd(SetUpdateFunction,Update)
 
 
 --[[
