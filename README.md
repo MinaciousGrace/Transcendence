@@ -8,9 +8,20 @@ toward a gameplay-optimized setup
 The following probably don't work and if they don't I don't care
 - 2p play (certainly won't look nice, but probably also won't work)
 - Net play (should be fine actually but ¯\_(?_?)_/¯)
-- Non-widescreen/wacky resolutions (again, might be ok)
+- widescreen; 4:3 is now the default and only supported aspect ratio
 
-Major alterations-----------------------------------------------------------------------------------------
+
+
+v1.1
+
+- switched to 4:3 aspect ratio layout default, it's just more sensible for gameplay/streaming layouts
+- merged in ca25nada's bugfixes/updates to the error bar
+- wrote in scripts for pulling MADS data from .sm files, functionally working but still very rough
+- updated defaults to better reflect optimized gameplay consult the prefoverride script for details
+- this version will force reset game preferences (not theme preferences and hopefully never again)
+
+
+v1.0
 
 Color/Presentation---- 
 Overall: Important stuff = biggger. Not important stuff = smaller/removed

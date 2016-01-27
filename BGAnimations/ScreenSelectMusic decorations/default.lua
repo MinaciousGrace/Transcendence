@@ -5,6 +5,7 @@ t[#t+1] = LoadActor("tabs")
 --local t = LoadFallbackB();
 t[#t+1] = LoadActor("songinfo");
 t[#t+1] = LoadActor("stars");
+t[#t+1] = LoadActor("mads");
 t[#t+1] = LoadActor("simfile");
 t[#t+1] = LoadActor("score");
 t[#t+1] = LoadActor("profile");

@@ -21,7 +21,7 @@ local t = Def.ActorFrame{
 -- this became a mess rather quickly
 
 local starsX = 10
-local starsY = 220+capWideScale(get43size(120),120)
+local starsY = 250+capWideScale(get43size(120),120)
 local maxStars = 0
 local starDistX = capWideScale(get43size(23)-1,23)
 local starDistY = 0
@@ -178,7 +178,7 @@ t[#t+1] = Def.ActorFrame{
 	};
 	--Lower Bar
 	Def.Quad{
-		InitCommand=cmd(xy,starsX,starsY+18;zoomto,frameWidth,50;halign,0;valign,0;diffuse,color("#333333CC");diffusealpha,0.66);
+		InitCommand=cmd(xy,starsX,starsY+18;zoomto,frameWidth+4,50;halign,0;valign,0;diffuse,color("#333333CC");diffusealpha,0.66);
 	};
 
 	--OverBar
@@ -197,93 +197,7 @@ t[#t+1] = Def.ActorFrame{
 		CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");
 		CurrentStepsP1ChangedMessageCommand=cmd(queuecommand,"Set");
 	};
-	
 	LoadFont("Common Normal")..{
-		InitCommand=cmd(xy,starsX+13,starsY-114;zoom,0.5;halign,0;diffusealpha,0;);
-		BeginCommand=cmd(queuecommand,"Set");
-		SetCommand=function(self)
-			if update then
-				local test1,test2
-				if stepsP1 ~= nil then
-					stream = stepsP1:GetRadarValues(PLAYER_1):GetValue("RadarCategory_Stream")
-					self:settextf("Stream: %5.2f%%",stream);
-				else
-					self:settext("Disabled");
-				end;
-			end;
-		end;
-		CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");
-		CurrentStepsP1ChangedMessageCommand=cmd(queuecommand,"Set");
-	};
-		LoadFont("Common Normal")..{
-		InitCommand=cmd(xy,starsX+13,starsY-102;zoom,0.5;halign,0;diffusealpha,0;);
-		BeginCommand=cmd(queuecommand,"Set");
-		SetCommand=function(self)
-			if update then
-				local test1,test2
-				if stepsP1 ~= nil then
-					js = stepsP1:GetRadarValues(PLAYER_1):GetValue("RadarCategory_Voltage")
-					self:settextf("Jumpstream: %5.2f%%",js);
-				else
-					self:settext("Disabled");
-				end;
-			end;
-		end;
-		CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");
-		CurrentStepsP1ChangedMessageCommand=cmd(queuecommand,"Set");
-	};
-			LoadFont("Common Normal")..{
-		InitCommand=cmd(xy,starsX+13,starsY-90;zoom,0.5;halign,0;diffusealpha,0;);
-		BeginCommand=cmd(queuecommand,"Set");
-		SetCommand=function(self)
-			if update then
-				local test1,test2
-				if stepsP1 ~= nil then
-					anchor = stepsP1:GetRadarValues(PLAYER_1):GetValue("RadarCategory_Air")
-					self:settextf("Anchor: %5.2f%%",anchor);
-				else
-					self:settext("Disabled");
-				end;
-			end;
-		end;
-		CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");
-		CurrentStepsP1ChangedMessageCommand=cmd(queuecommand,"Set");
-	};
-				LoadFont("Common Normal")..{
-		InitCommand=cmd(xy,starsX+13,starsY-78;zoom,0.5;halign,0;diffusealpha,0;);
-		BeginCommand=cmd(queuecommand,"Set");
-		SetCommand=function(self)
-			if update then
-				local test1,test2
-				if stepsP1 ~= nil then
-					jack = stepsP1:GetRadarValues(PLAYER_1):GetValue("RadarCategory_Freeze")
-					self:settextf("Jack: %5.2f%%",jack);
-				else
-					self:settext("Disabled");
-				end;
-			end;
-		end;
-		CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");
-		CurrentStepsP1ChangedMessageCommand=cmd(queuecommand,"Set");
-	};
-					LoadFont("Common Normal")..{
-		InitCommand=cmd(xy,starsX+13,starsY-66;zoom,0.5;halign,0;diffusealpha,0;);
-		BeginCommand=cmd(queuecommand,"Set");
-		SetCommand=function(self)
-			if update then
-				local test1,test2
-				if stepsP1 ~= nil then
-					stam = stepsP1:GetRadarValues(PLAYER_1):GetValue("RadarCategory_Chaos")
-					self:settextf("Stamina: %5.2f%%",stam);
-				else
-					self:settext("Disabled");
-				end;
-			end;
-		end;
-		CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");
-		CurrentStepsP1ChangedMessageCommand=cmd(queuecommand,"Set");
-	};
-          LoadFont("Common Normal")..{
 		InitCommand=cmd(xy,starsX+13,starsY-42;zoom,0.5;halign,0;maxwidth,72);
 		BeginCommand=cmd(queuecommand,"Set");
 		SetCommand=function(self)
@@ -443,36 +357,6 @@ t[#t+1] = Def.ActorFrame{
 					self:settext(mines);
 				else
 					self:settext("Disabled");
-				end;
-			end;
-		end;
-		CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");
-		CurrentStepsP1ChangedMessageCommand=cmd(queuecommand,"Set");
-	};
-
-	LoadFont("Common Large")..{
-		InitCommand=cmd(xy,starsX+13,starsY-64;zoom,0.6;maxwidth,110/0.6;halign,0);
-		BeginCommand=cmd(queuecommand,"Set");
-		SetCommand=function(self)
-			if update then
-				local diff = 0;
-				local enabled = GAMESTATE:IsPlayerEnabled(PLAYER_1);
-				if enabled and stepsP1 ~= nil then
-					diff = stepsP1:GetMeter() or 0;
-					self:settext(diff);
-					if diff < 20 then
-						self:diffuse(getVividDifficultyColor('Difficulty_Beginner'))
-					elseif diff < 35 then
-						self:diffuse(getVividDifficultyColor('Difficulty_Easy'))
-					elseif diff < 50 then
-						self:diffuse(getVividDifficultyColor('Difficulty_Medium'))
-					elseif diff < 65 then
-						self:diffuse(getVividDifficultyColor('Difficulty_Hard'))
-					else
-						self:diffuse(getVividDifficultyColor('Difficulty_Challenge'))
-					end;
-				else
-					self:settext(0);
 				end;
 			end;
 		end;
@@ -651,9 +535,9 @@ t[#t+1] = Def.ActorFrame{
 	};
 };
 
-	t[#t+1] = LoadFont("Common Large") .. {
+ t[#t+1] = LoadFont("Common Large") .. {
 	Name="songLength";
-	InitCommand=cmd(xy,starsX+450,starsY+45;visible,true;halign,1;zoom,capWideScale(get43size(0.45),0.45);maxwidth,capWideScale(get43size(360),360)/capWideScale(get43size(0.45),0.45));
+	InitCommand=cmd(xy,(capWideScale(get43size(384),384))+64,SCREEN_BOTTOM-93;visible,true;halign,1;zoom,capWideScale(get43size(0.45),0.45);maxwidth,capWideScale(get43size(360),360)/capWideScale(get43size(0.45),0.45));
 	BeginCommand=cmd(queuecommand,"Set");
 	SetCommand=function(self)
 		if update then
@@ -661,10 +545,10 @@ t[#t+1] = Def.ActorFrame{
 			local seconds = 0
 			if song ~= nil then
 				seconds = song:GetStepsSeconds() --song:MusicLengthSeconds()
-				self:settext(SecondsToMMSS(seconds))
+				self:settext("")-- (SecondsToMMSS(seconds))
 				self:diffuse(getSongLengthColor(seconds))
 			else
-				self:settext("")
+        self:settext("")
 			end
 		end
 	end;

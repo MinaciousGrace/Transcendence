@@ -32,8 +32,8 @@ local textPos = { -- Position of the NPS text
 	}
 }
 
-local maxVerts = 500 -- Higher numbers allows for more detailed graph that spans for a longer duration. But may lead to performance issues
-local graphFreq = 0.1 -- The frequency in which the graph updates in seconds.
+local maxVerts = 100 -- Higher numbers allows for more detailed graph that spans for a longer duration. But may lead to performance issues
+local graphFreq = 0.2 -- The frequency in which the graph updates in seconds.
 local lifeGraph = true -- SHow lifegraph 
 --------------------
 

@@ -8,7 +8,7 @@ local barPosition = themeConfig:get_data().global.ProgressBar -- 0 = bottom, 1 =
 local width = capWideScale(get43size(300),300)
 local height = 16
 local frameX = SCREEN_CENTER_X
-local bottomModifier = -20;  -- Negative value, how far up
+local bottomModifier = -25;  -- Negative value, how far up
 local topModifier = 15;       -- Positive value, how far down
 local frameY = 0
 --=======================================

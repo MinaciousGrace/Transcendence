@@ -2,7 +2,7 @@ local t = Def.ActorFrame{};
 
 t[#t+1] = LoadFont("Common Normal") .. {
 	Name = "currentTime";
-	InitCommand=cmd(xy,850,475;halign,1;valign,1;zoom,0.45;);
+	InitCommand=cmd(xy,SCREEN_WIDTH-5,SCREEN_BOTTOM-5;halign,1;valign,1;zoom,0.45;);
 };
 
 local function Update(self)

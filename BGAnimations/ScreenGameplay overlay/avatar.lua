@@ -84,7 +84,7 @@ if GAMESTATE:IsPlayerEnabled(PLAYER_1) then
 		};
 		
 		LoadFont("Common Large") .. {
-			InitCommand=cmd(xy,AvatarXP1+150,AvatarYP1+23;halign,0;zoom,0.55;shadowlength,1;maxwidth,180/0.6);
+			InitCommand=cmd(xy,AvatarXP1+143,AvatarYP1-6;halign,0;zoom,0.35;shadowlength,1;maxwidth,180/0.6);
 			BeginCommand=cmd(queuecommand,"Set");
 			SetCommand=function(self)
 				local temp1 = getCurScoreST(PLAYER_1,0)

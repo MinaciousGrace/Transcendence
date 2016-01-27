@@ -165,20 +165,6 @@ if enabled1P then
 		index = index +1 
 	end
 
-	t[#t+1] = LoadFont("Common Normal") .. { --grade
-	        InitCommand=cmd(xy,frameX1P+5,frameY1P+8+(index*spacing);zoom,gradeFontSize;horizalign,left);
-			BeginCommand=function(self)
-				self:settext(getGradeStrings(getGradeST(PLAYER_1)))
-			end;
-			SetCommand=function(self)
-				local temp = GetGradeFromPercent(0)
-				if curmaxdp ~= 0 then -- bunch of error messages pop up when getgradefrompercent is called with a undefined value
-					temp = getGradeST(PLAYER_1)
-				end
-				self:settext(getGradeStrings(temp))
-			end;
-			JudgmentMessageCommand=cmd(queuecommand,"Set")
-	}
 end
 
 --Make one for P2

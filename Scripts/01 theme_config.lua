@@ -9,9 +9,10 @@ local defaultConfig = {
 		RateSort = true,
 		HelpMenu = false,
 		ScoreBoardNag = false,
-		MeasureLines = true,
-		ProgressBar = 2, -- 0 = off, 1 bottom , 2 top
-		Transcended = 0
+		MeasureLines = false,
+		ProgressBar = 1, -- 0 = off, 1 bottom , 2 top
+		Transcended = 0,
+		versupdate = 0
 	},
 	NPSDisplay = {
 		--Enabled = true, -- Player Controlled

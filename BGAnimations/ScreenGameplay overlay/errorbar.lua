@@ -2,7 +2,7 @@ local t = Def.ActorFrame{}
 
 -- A somewhat naive implementation of the osu's error bar.
 -- Single Player only until I figure out where to put everything
--- Hopefully I can change it so I don't have to initialize 300 quads beforehand.
+-- Hopefully I can change it so I don't have to initialize like 300 quads beforehand.
 local enabled = (((playerConfig:get_data(pn_to_profile_slot(PLAYER_1)).ErrorBar == true) and GAMESTATE:IsHumanPlayer(PLAYER_1)) or 
 				((playerConfig:get_data(pn_to_profile_slot(PLAYER_2)).ErrorBar == true) and GAMESTATE:IsHumanPlayer(PLAYER_2))) and 
 				GAMESTATE:GetNumPlayersEnabled() == 1
@@ -11,29 +11,27 @@ local pn = GAMESTATE:GetEnabledPlayers()[1]
 --=======================================
 --ONLY EDIT THESE VALUES
 --=======================================
-local maxOffsetRange = 0.18 --timing range to show in seconds. 0.18 for upto bads, 0.135 for goods, 0.09 for greats, etc.
-local barcount = 300 -- Number of bars to initialize.
+local timingScale = PREFSMAN:GetPreference("TimingWindowScale")
+local maxOffsetRange = 0.18*timingScale --timing range to show in seconds. 0.18 for upto bads, 0.135 for goods, 0.09 for greats, etc.
+local barcount = 100 -- Number of bars to initialize. Older bars will just move to the newest offset before they fade out if it's not high enough.
 local frameX = SCREEN_CENTER_X -- X Positon (Center of the bar)
 local frameY = SCREEN_BOTTOM-187 -- Y Positon (Center of the bar)
-local frameHeight = 5 -- Height of the bar
+local frameHeight = 10 -- Height of the bar
 local frameWidth = capWideScale(get43size(300),300) -- Width of the bar
 local tickWidth = 2 -- Width of the ticks
-local tickDuration = 4 -- Time duration in seconds before the ticks fade out
+local tickDuration = 1 -- Time duration in seconds before the ticks fade out
 --=======================================
 
 
 local currentbar = 1
 local protimingsum = 0
 local offset = 0
-local protimingsum = 0
-local currentbar = 1
-local offset = 0
 
 function proTimingTicks(pn,index)
 	return Def.Quad{
 		InitCommand=cmd(xy,frameX,frameY;zoomto,tickWidth,frameHeight;diffusealpha,0;);
 		JudgmentMessageCommand=function(self,params)
-			if params.Player == pn and params.TapNoteScore then
+			if params.Player == pn and not params.HoldNoteScore then
 				if currentbar == index and 
 					params.TapNoteScore ~= 'TapNoteScore_HitMine' and 
 					params.TapNoteScore ~= 'TapNoteScore_AvoidMine' and 
@@ -55,16 +53,15 @@ end
 if enabled then
 	t[#t+1] = Def.Actor{
 		JudgmentMessageCommand=function(self,params)
-			offset = 0
 			if params.Player == pn then
-				currentbar = ((currentbar+1)%barcount)+1
+				
 				if params.HoldNoteScore then
 					--dosomething
 				elseif params.TapNoteScore == 'TapNoteScore_HitMine' or params.TapNoteScore == 'TapNoteScore_AvoidMine' then
 					--dosomething
 				else
 					if params.TapNoteScore ~= 'TapNoteScore_Miss' then
-						--currentbar = ((currentbar+1)%barcount)+1
+						currentbar = ((currentbar)%barcount)+1
 						if params.Early then
 							offset = params.TapNoteOffset
 							protimingsum = protimingsum + params.TapNoteOffset
@@ -89,14 +86,16 @@ if enabled then
 
 
 	t[#t+1] = Def.Quad{
-		InitCommand=cmd(xy,frameX,frameY;zoomto,2,frameHeight;diffuse,color("#000000");diffusealpha,0);
+		InitCommand=cmd(xy,frameX,frameY;zoomto,2,frameHeight;diffuse,color("#FFFFFF");diffusealpha,0);
 	};
+
+
 	--[[
 	t[#t+1] = Def.Quad{
-		InitCommand=cmd(xy,frameX+1-frameWidth/2,frameY;zoomto,2,frameHeight+4;diffuse,color("#000000");diffusealpha,0);
+		InitCommand=cmd(xy,frameX+1-frameWidth/2,frameY;zoomto,2,frameHeight+4;diffuse,color("#FFFFFF");diffusealpha,0.5);
 	};
 	t[#t+1] = Def.Quad{
-		InitCommand=cmd(xy,frameX-1+frameWidth/2,frameY;zoomto,2,frameHeight+4;diffuse,color("#000000");diffusealpha,0);
+		InitCommand=cmd(xy,frameX-1+frameWidth/2,frameY;zoomto,2,frameHeight+4;diffuse,color("#FFFFFF");diffusealpha,0.5);
 	};
 	--]]
 	t[#t+1] = LoadFont("Common Normal") .. {
@@ -109,12 +108,12 @@ if enabled then
     };
 
 
-	--[[ Debug
+	--[[
 	t[#t+1] = LoadFont("Common Normal") .. {
-		InitCommand=cmd(xy,300,300;halign,0;zoom,2;diffuse,getMainColor(2));
+		InitCommand=cmd(xy,300,300;halign,0;zoom,2;);
 		BeginCommand=cmd(queuecommand,"Set");
 		SetCommand=function(self)
-			self:settext(offset)
+			self:settext(currentbar)
 		end;
 		JudgmentMessageCommand=cmd(playcommand,"Set");
 	};
