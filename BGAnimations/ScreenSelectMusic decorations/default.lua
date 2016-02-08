@@ -13,6 +13,18 @@ t[#t+1] = LoadActor("profile");
 t[#t+1] = LoadActor("other");
 --t[#t+1] = StandardDecorationFromFileOptional("StepsDisplayList","StepsDisplayList");
 --t[#t+1] = LoadActor("../_frame");
+t[#t+1] = LoadActor("../ExportSelection")
+
+t[#t+1] = Def.Actor{
+ Name="StreamInfoUpdater1";
+ CurrentSongChangedMessageCommand=function(self)
+  local song = GAMESTATE:GetCurrentSong()
+  if song then
+   MESSAGEMAN:Broadcast("UpdateStreamInfo",{Source="Selection"})
+
+  end
+ end;
+};
 
 
 t[#t+1] = Def.ActorFrame {

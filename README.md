@@ -19,7 +19,6 @@ Known issues/bugs
 This isn't a particularly big deal unless you scroll through every song with msd data while 
 on the msd graphs tab. Which you shouldn't be doing anyway. My guess is the text data also
 isn't destroyed and stays in memory but this is far less concerning (probably?).
-- The "now playing/last played" script doesn't work (ExportSelection.lua). Dunno why.
 - The "technical" meter bar is a mess right now. In its current incarnation it essentially functions 
 as a shitty "jack" meter that doubles as an equally shitty "anchor-y" meter. It currently does not
 factor in how manipulatable patterns present in the file are, which is its primary purpose.
@@ -36,12 +35,12 @@ is not entered. If the options menu is entered your rate will be reset to the ra
 v1.2
 
 - Rewrote all the scripts for pulling msd data
-- 
+- For now the currently available msd data packs will be packaged with the theme download 
 - Merged in ca25nada's simfile tab updates (cuz it was effortless)
 - Reinstated Captain General 21 mini options. Default mini mod upon theme installation is now 0 again. 
 If you wish to set a default value it is most efficiently done from the Preferences.ini file under Game-Dance.
 - Added 0.9-0.7 rates. They are accessible after scrolling left (the 0.05 increments) beyond 1.95x, or right
-(the 0.1)
+(the 0.1 increments) beyond 2.0x
 - Rate (music speed) can now be changed from music select. Msd data display will update to match rate selected.
 There's a minor bug with this documented in the bugs section.
 
