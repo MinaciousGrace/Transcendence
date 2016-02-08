@@ -537,7 +537,7 @@ t[#t+1] = Def.ActorFrame{
 
  t[#t+1] = LoadFont("Common Large") .. {
 	Name="songLength";
-	InitCommand=cmd(xy,(capWideScale(get43size(384),384))+64,SCREEN_BOTTOM-93;visible,true;halign,1;zoom,capWideScale(get43size(0.45),0.45);maxwidth,capWideScale(get43size(360),360)/capWideScale(get43size(0.45),0.45));
+	InitCommand=cmd(xy,(capWideScale(get43size(384),384))+62,SCREEN_BOTTOM-93;visible,true;halign,1;zoom,capWideScale(get43size(0.6),0.6);maxwidth,capWideScale(get43size(360),360)/capWideScale(get43size(0.45),0.45));
 	BeginCommand=cmd(queuecommand,"Set");
 	SetCommand=function(self)
 		if update then
@@ -545,7 +545,7 @@ t[#t+1] = Def.ActorFrame{
 			local seconds = 0
 			if song ~= nil then
 				seconds = song:GetStepsSeconds() --song:MusicLengthSeconds()
-				self:settext("")-- (SecondsToMMSS(seconds))
+				self:settext(SecondsToMMSS(seconds))
 				self:diffuse(getSongLengthColor(seconds))
 			else
         self:settext("")

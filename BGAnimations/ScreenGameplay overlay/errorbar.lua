@@ -86,7 +86,7 @@ if enabled then
 
 
 	t[#t+1] = Def.Quad{
-		InitCommand=cmd(xy,frameX,frameY;zoomto,2,frameHeight;diffuse,color("#FFFFFF");diffusealpha,0);
+		InitCommand=cmd(xy,frameX,frameY;zoomto,2,frameHeight;diffuse,getMainColor('highlight');diffusealpha,1);
 	};
 
 

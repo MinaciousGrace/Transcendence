@@ -8,8 +8,8 @@ local defaultConfig = {
 	GhostTarget = 93,
 	ErrorBar = true,
 	PaceMaker = false,
-	LaneCover = 0, -- soon to be changed to: 0=off, 1=sudden, 2=hidden
-	LaneCoverHeight = 0,
+	LaneCover = 1, -- soon to be changed to: 0=off, 1=sudden, 2=hidden
+	LaneCoverHeight = 20,
 	NPSDisplay = true,
 	NPSGraph = true,
 	CBHighlight = true,

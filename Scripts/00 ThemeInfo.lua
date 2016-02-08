@@ -2,7 +2,7 @@
 
 themeInfo = {
 	Name = "Transcendence",
-	Version = "1.1",
+	Version = "1.2",
 	Date = "20160111",
 };
 

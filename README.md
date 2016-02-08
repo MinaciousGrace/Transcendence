@@ -5,10 +5,45 @@ Transcendence is a simple adaptation of ca25nada's spawncamping-wallhack theme
 that focuses on providing a minimalist and configureless interface geared purely
 toward a gameplay-optimized setup
 
-The following probably don't work and if they don't I don't care
-- 2p play (certainly won't look nice, but probably also won't work)
-- Net play (should be fine actually but ¯\_(?_?)_/¯)
-- widescreen; 4:3 is now the default and only supported aspect ratio
+The following are not supported to varying degrees of breaky-ness:
+
+- Any version of sm5 older than 5.0.10
+- Any aspect ratio other than 4:3
+- 2player
+- Net play
+- Courses, casseroles, lasagna etc
+
+Known issues/bugs
+
+- Loaded graphs from the msd tab will stay in the game memory until it overflows and crashes.
+This isn't a particularly big deal unless you scroll through every song with msd data while 
+on the msd graphs tab. Which you shouldn't be doing anyway. My guess is the text data also
+isn't destroyed and stays in memory but this is far less concerning (probably?).
+- The "now playing/last played" script doesn't work (ExportSelection.lua). Dunno why.
+- The "technical" meter bar is a mess right now. In its current incarnation it essentially functions 
+as a shitty "jack" meter that doubles as an equally shitty "anchor-y" meter. It currently does not
+factor in how manipulatable patterns present in the file are, which is its primary purpose.
+- The "jack" meter is disabled until I write explicit jack sequence detection, for now the "technical"
+meter will suffice
+- Gameplay and evaluation screens haven't been touched nearly at all since initial release (they're up next)
+- The MSD system currently does not support 1.x5 rates. This is not difficult to implement but it's not a 
+high priority. 
+- Changing the rate (music speed) while in music select will only carry over into gameplay if the options menu
+is not entered. If the options menu is entered your rate will be reset to the rate of the last played song. 
+- There's no documentation on the MSD system yet. If you don't understand it, don't use it. 
+
+
+v1.2
+
+- Rewrote all the scripts for pulling msd data
+- 
+- Merged in ca25nada's simfile tab updates (cuz it was effortless)
+- Reinstated Captain General 21 mini options. Default mini mod upon theme installation is now 0 again. 
+If you wish to set a default value it is most efficiently done from the Preferences.ini file under Game-Dance.
+- Added 0.9-0.7 rates. They are accessible after scrolling left (the 0.05 increments) beyond 1.95x, or right
+(the 0.1)
+- Rate (music speed) can now be changed from music select. Msd data display will update to match rate selected.
+There's a minor bug with this documented in the bugs section.
 
 
 
@@ -16,7 +51,7 @@ v1.1
 
 - switched to 4:3 aspect ratio layout default, it's just more sensible for gameplay/streaming layouts
 - merged in ca25nada's bugfixes/updates to the error bar
-- wrote in scripts for pulling MADS data from .sm files, functionally working but still very rough
+- wrote in scripts for pulling msd data from .sm files, functionally working but still very rough
 - updated defaults to better reflect optimized gameplay consult the prefoverride script for details
 - this version will force reset game preferences (not theme preferences and hopefully never again)
 

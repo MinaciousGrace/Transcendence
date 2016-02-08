@@ -10,7 +10,7 @@ local playerDistY = 95
 local barXP2 = 157
 local barYP2 = barYP1+playerDistY
 
-local barWidth = capWideScale(get43size(335),335)-(barXP1-capWideScale(get43size(barXP1),barXP1))
+local barWidth = capWideScale(get43size(333),333)-(barXP1-capWideScale(get43size(barXP1),barXP1))
 local barHeight = 4
 local animationDelay = 0
 local animationLength = 1

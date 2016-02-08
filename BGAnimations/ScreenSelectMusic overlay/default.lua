@@ -40,4 +40,5 @@ t[#t+1] = LoadActor("../_cursor");
 t[#t+1] = LoadActor("../_halppls");
 t[#t+1] = LoadActor("currenttime");
 
+
 return t

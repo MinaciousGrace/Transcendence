@@ -50,8 +50,8 @@ local judgeFontSize = 0.40 -- Font sizes for different text elements
 local countFontSize = 0.35
 local gradeFontSize = 0.45
 
-local frameX1P = 138 -- X position of the frame when center1player is on
-local frameY1P = (SCREEN_HEIGHT*0.62)+34 -- Y Position of the frame
+local frameX1P = 10 -- X position of the frame when center1player is on
+local frameY1P = (SCREEN_HEIGHT*0.62)-60 -- Y Position of the frame
 
 local frameX2P = SCREEN_WIDTH-20-frameWidth -- X position of the frame when center1player is on
 local frameY2P = (SCREEN_HEIGHT*0.62)-5 -- Y Position of the frame
