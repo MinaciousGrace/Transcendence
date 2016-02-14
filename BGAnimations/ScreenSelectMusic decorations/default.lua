@@ -21,7 +21,6 @@ t[#t+1] = Def.Actor{
   local song = GAMESTATE:GetCurrentSong()
   if song then
    MESSAGEMAN:Broadcast("UpdateStreamInfo",{Source="Selection"})
-
   end
  end;
 };

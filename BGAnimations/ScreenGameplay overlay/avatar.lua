@@ -23,6 +23,46 @@ local AvatarYP1 = SCREEN_HEIGHT-50
 local AvatarXP2 = SCREEN_WIDTH-50
 local AvatarYP2 = SCREEN_HEIGHT-50
 
+local function msd_exists()
+  local song = GAMESTATE:GetCurrentSong()
+  if song == nil then
+	return false
+  end
+  local chart = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()):GetDifficulty()..GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
+  return FILEMAN:DoesFileExist(song:GetSongDir().."msd/"..chart)
+end
+
+local function GetMsdData(x)
+  local sg = tostring(x)
+  
+  local s = GAMESTATE:GetCurrentSong()
+  local c = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()):GetDifficulty()..GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
+  local p = tostring(s:GetSongDir().."msd/"..c.."/msd.txt")
+  local f = RageFileUtil.CreateRageFile()
+  
+  if not f:Open(p,1) then
+	f:destroy()
+	return nil
+	end
+	
+	local d = f:Read()
+	f:Close()
+	f:destroy()
+    
+  local rate = getrate()
+  
+  if sg == "V" then
+  local v = string.sub(d,string.find(d,sg)+1,string.find(d,sg)+4)
+  return v
+  end
+  
+  s = string.find(d,"R_"..rate.."_SG_"..sg)
+  local f = string.find(d,":",s)-1
+  o = string.sub(d,s,f)
+  return o 
+end
+
+
 -- P1 Avatar
 t[#t+1] = Def.Actor{
 	BeginCommand=cmd(queuecommand,"Set");
@@ -112,26 +152,32 @@ if GAMESTATE:IsPlayerEnabled(PLAYER_1) then
 			InitCommand=cmd(xy,AvatarXP1+52,AvatarYP1+28;halign,0;zoom,0.75;shadowlength,1;maxwidth,50;diffuse,getMainColor('positive'));
 			BeginCommand=cmd(queuecommand,"Set");
 			SetCommand=function(self)
-				local steps = GAMESTATE:GetCurrentSteps(PLAYER_1);
-				local meter = steps:GetMeter()
+				local meter
+				if msd_exists() then
+					local ds = split(GetMsdData(93),"%,")
+					meter = tonumber(ds[2])
+				else
+					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1);
+					meter = steps:GetMeter()
+				end
 				self:settext(meter)
-				if meter < 20 then
-          self:diffuse(getVividDifficultyColor('Difficulty_Beginner'))
-        elseif meter < 35 then
-          self:diffuse(getVividDifficultyColor('Difficulty_Easy'))
-        elseif meter < 50 then
-          self:diffuse(getVividDifficultyColor('Difficulty_Medium'))
-        elseif meter < 65 then
-          self:diffuse(getVividDifficultyColor('Difficulty_Hard'))
-        else
-          self:diffuse(getVividDifficultyColor('Difficulty_Challenge'))
-        end;
+				if meter < 15 then
+					self:diffuse(getVividDifficultyColor('Difficulty_Beginner'))
+				elseif meter < 22 then
+					self:diffuse(getVividDifficultyColor('Difficulty_Easy'))
+				elseif meter < 28 then
+					self:diffuse(getVividDifficultyColor('Difficulty_Medium'))
+				elseif meter < 33 then
+					self:diffuse(getVividDifficultyColor('Difficulty_Hard'))
+				else
+					self:diffuse(getVividDifficultyColor('Difficulty_Challenge'))
+				end;
 			end;
 		};
 
 		LoadFont("Common Normal") .. {
 			Name="P1AvatarOption";
-			InitCommand=cmd(xy,AvatarXP1+91,AvatarYP1+39;halign,0;zoom,0.4;shadowlength,1;maxwidth,180/0.4;diffuse);
+			InitCommand=cmd(xy,AvatarXP1+91,AvatarYP1+39;halign,0;zoom,0.4;shadowlength,1;maxwidth,180/0.4;);
 			BeginCommand=cmd(queuecommand,"Set");
 			SetCommand=function(self)
 				self:settext(GAMESTATE:GetPlayerState(PLAYER_1):GetPlayerOptionsString('ModsLevel_Current'))
@@ -142,7 +188,7 @@ if GAMESTATE:IsPlayerEnabled(PLAYER_1) then
 	
 	t[#t+1] = Def.ActorFrame{
 	LoadFont("Common Normal")..{
-		InitCommand=cmd(xy,AvatarXP1+53,AvatarYP1+8;halign,0;zoom,0.5;shadowlength,1;maxwidth,180/0.4;diffuse);
+		InitCommand=cmd(xy,AvatarXP1+53,AvatarYP1+8;halign,0;zoom,0.5;shadowlength,1;maxwidth,180/0.4;);
 		BeginCommand=cmd(queuecommand,"Set");
 		SetCommand=function(self)
 			self:settextf("Judge: %d",GetTimingDifficulty())
@@ -150,7 +196,5 @@ if GAMESTATE:IsPlayerEnabled(PLAYER_1) then
     };
   };
 end;
-
-
 
 return t;

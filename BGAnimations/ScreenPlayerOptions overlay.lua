@@ -66,39 +66,6 @@ t[#t+1] = Def.Actor{
 	PlayerUnjoinedMessageCommand=cmd(queuecommand,"Set");
 }
 
--- P2 Avatar
-t[#t+1] = Def.Actor{
-	BeginCommand=cmd(queuecommand,"Set");
-	SetCommand=function(self)
-		if GAMESTATE:IsPlayerEnabled(PLAYER_2) then
-			profileP2 = GetPlayerOrMachineProfile(PLAYER_2)
-			if profileP2 ~= nil then
-				if profileP2 == PROFILEMAN:GetMachineProfile() then
-					profileNameP2 = "Machine Profile"
-				else
-					profileNameP2 = profileP2:GetDisplayName()
-				end
-				playCountP2 = profileP2:GetTotalNumSongsPlayed()
-				playTimeP2 = profileP2:GetTotalSessionSeconds()
-				noteCountP2 = profileP2:GetTotalTapsAndHolds()
-			else 
-				profileNameP2 = "No Profile"
-				playCountP2 = 0
-				playTimeP2 = 0
-				noteCountP2 = 0
-			end;
-		else
-			profileNameP2 = "No Profile"
-			playCountP2 = 0
-			playTimeP2 = 0
-			noteCountP2 = 0
-		end;
-	end;
-	PlayerJoinedMessageCommand=cmd(queuecommand,"Set");
-	PlayerUnjoinedMessageCommand=cmd(queuecommand,"Set");
-}
-
-
 t[#t+1] = Def.ActorFrame{
 	Name="Avatar"..PLAYER_1;
 	BeginCommand=cmd(queuecommand,"Set");
@@ -169,79 +136,6 @@ t[#t+1] = Def.ActorFrame{
 		end;
 	}
 }
-
--- P2 Avatar
-t[#t+1] = Def.ActorFrame{
-	Name="Avatar"..PLAYER_2;
-	BeginCommand=cmd(queuecommand,"Set");
-	SetCommand=function(self)
-		if profileP2 == nil then
-			self:visible(false)
-		else
-			self:visible(true)
-		end;
-	end;
-	PlayerJoinedMessageCommand=cmd(queuecommand,"Set");
-	PlayerUnjoinedMessageCommand=cmd(queuecommand,"Set");
-
-	Def.Sprite {
-		Name="Image";
-		InitCommand=cmd(visible,true;halign,0;valign,0;xy,AvatarXP2,AvatarYP2);
-		BeginCommand=cmd(queuecommand,"ModifyAvatar");
-		PlayerJoinedMessageCommand=cmd(queuecommand,"ModifyAvatar");
-		PlayerUnjoinedMessageCommand=cmd(queuecommand,"ModifyAvatar");
-		ModifyAvatarCommand=function(self)
-			self:finishtweening();
-			self:LoadBackground(THEME:GetPathG("","../"..getAvatarPath(PLAYER_2)));
-			self:zoomto(30,30)
-		end;	
-	};
-	LoadFont("Common Normal") .. {
-		InitCommand=cmd(xy,AvatarXP2-3,AvatarYP2+7;halign,1;zoom,0.45;);
-		BeginCommand=cmd(queuecommand,"Set");
-		SetCommand=function(self)
-			self:settext(profileNameP2.."'s Scroll Speed:")
-		end;
-		PlayerJoinedMessageCommand=cmd(queuecommand,"Set");
-		PlayerUnjoinedMessageCommand=cmd(queuecommand,"Set");
-	};
-	LoadFont("Common Normal") .. {
-		InitCommand=cmd(xy,AvatarXP2-3,AvatarYP2+19;halign,1;zoom,0.45;);
-		BeginCommand=function(self)
-			local speed, mode= GetSpeedModeAndValueFromPoptions(PLAYER_2)
-			self:playcommand("SpeedChoiceChanged", {pn= PLAYER_2, mode= mode, speed= speed})
-		end;
-		PlayerJoinedMessageCommand=cmd(queuecommand,"Set");
-		PlayerUnjoinedMessageCommand=cmd(queuecommand,"Set");
-		SpeedChoiceChangedMessageCommand=function(self,param)
-			if param.pn == PLAYER_2 then
-				local text = ""
-				if param.mode == "x" then
-					if not bpms[1] then
-						text = "??? - ???"
-					elseif bpms[1] == bpms[2] then
-						text = math.round(bpms[1]*param.speed/100)
-					else
-						text = string.format("%d - %d",math.round(bpms[1]*param.speed/100),math.round(bpms[2]*param.speed/100))
-					end
-				elseif param.mode == "C" then
-					text = param.speed
-				else
-					if not bpms[1] then
-						text = "??? - "..param.speed
-					elseif bpms[1] == bpms[2] then
-						text = param.speed
-					else
-						local factor = param.speed/bpms[2]
-						text = string.format("%d - %d",math.round(bpms[1]*factor),param.speed)
-					end
-				end
-				self:settext(text)
-			end
-		end;
-	}
-}
-
 
 --Frames
 t[#t+1] = Def.Quad{

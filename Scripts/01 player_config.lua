@@ -8,11 +8,11 @@ local defaultConfig = {
 	GhostTarget = 93,
 	ErrorBar = true,
 	PaceMaker = false,
-	LaneCover = 1, -- soon to be changed to: 0=off, 1=sudden, 2=hidden
-	LaneCoverHeight = 20,
+	LaneCover = 0, -- soon to be changed to: 0=off, 1=sudden, 2=hidden
+	LaneCoverHeight = 10,
 	NPSDisplay = true,
 	NPSGraph = true,
-	CBHighlight = true,
+	CBHighlight = false,
 }
 
 playerConfig = create_setting("playerConfig", "playerConfig.lua", defaultConfig, -1)

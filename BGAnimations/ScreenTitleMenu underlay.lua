@@ -10,7 +10,7 @@ t[#t+1] = Def.Quad{
 t[#t+1] = LoadFont("Common Large") .. {
 	InitCommand=cmd(xy,5,frameY-80;zoom,0.5;valign,1;halign,0;diffuse,getMainColor('highlight'));
 	OnCommand=function(self)
-		self:settext(getThemeName());
+		self:settext(getThemeName().." v"..getThemeVersion());
 	end;
 }
 

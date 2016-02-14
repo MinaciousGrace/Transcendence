@@ -410,3 +410,12 @@ end
 function getPauseCount()
 	return pauseCount
 end
+
+
+function setLastSecond(t)
+	lastSecond = t
+end
+
+function getLastSecond()
+	return lastSecond
+end

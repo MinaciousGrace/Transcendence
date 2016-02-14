@@ -35,77 +35,6 @@ local t = Def.ActorFrame{
 	PlayerJoinedMessageCommand=cmd(queuecommand,"Set");
 };
 
-local function split(str, pat)
-   local t = {}  -- NOTE: use {n = 0} in Lua-5.0
-   local fpat = "(.-)" .. pat
-   local last_end = 1
-   local s, e, cap = str:find(fpat, 1)
-   while s do
-      if s ~= 1 or cap ~= "" then
-	 table.insert(t,cap)
-      end
-      last_end = e+1
-      s, e, cap = str:find(fpat, last_end)
-   end
-   if last_end <= #str then
-      cap = str:sub(last_end)
-      table.insert(t, cap)
-   end
-   return t
-end
-
-local function msd_exists()
-  local song = GAMESTATE:GetCurrentSong()
-  if song == nil then
-	return false
-  end
-  local chart = GAMESTATE:GetHardestStepsDifficulty()..GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
-  return FILEMAN:DoesFileExist(song:GetSongDir().."msd/"..chart)
-end
-
-local function GetMsdData(x)
-  local sg = tostring(x)
-  
-  local s = GAMESTATE:GetCurrentSong()
-  local c = GAMESTATE:GetHardestStepsDifficulty()..GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
-  local p = tostring(s:GetSongDir().."msd/"..c.."/msd.txt")
-  local f = RageFileUtil.CreateRageFile()
-  
-  if not f:Open(p,1) then
-	f:destroy()
-	return nil
-	end
-	
-	local d = f:Read()
-	f:Close()
-	f:destroy()
-    
-  local rate = getrate()
-  
-  if sg == "V" then
-  local v = string.sub(d,string.find(d,sg)+1,string.find(d,sg)+4)
-  return v
-  end
-  
-  s = string.find(d,"R_"..rate.."_SG_"..sg)
-  local f = string.find(d,":",s)-1
-  o = string.sub(d,s,f)
-  return o 
-end
-
-function getrate ()
-  local rate = GAMESTATE:GetSongOptions('ModsLevel_Song')
-  if rate == "" then
-    rate = "1"
-  end
-  if rate == "2.0xMusic" then
-  rate = "2"
-  end
-  rate = string.gsub(rate,"xMusic","")
-  return rate
-end
-
-
 t[#t+1] = Def.ActorFrame{
 	Name="MsdData";
 	InitCommand=cmd(queuecommand,"Set");
@@ -136,11 +65,13 @@ t[#t+1] = LoadFont("Common Large") .. {
 	BeginCommand=cmd(queuecommand,"Set");
 	CodeMessageCommand=function(self,params)
 		local rate = getrate()
-		if params.Name == "PrevScore" and tonumber(getrate()) < 2 and getTabIndex() == 0 then
+		if params.Name == "PrevScore" and tonumber(rate) < 2 and getTabIndex() == 0 then
 			ratezz = GAMESTATE:GetSongOptionsObject(2):MusicRate(rate+0.1)
+			ratezzz = GAMESTATE:GetSongOptionsObject(0):MusicRate(rate+0.1)
 			MESSAGEMAN:Broadcast("CurrentSongChanged")
-		elseif params.Name == "NextScore" and tonumber(getrate()) > 0.8 and getTabIndex() == 0 then
+		elseif params.Name == "NextScore" and tonumber(rate) > 0.8 and getTabIndex() == 0 then
 			ratezz = GAMESTATE:GetSongOptionsObject(2):MusicRate(rate-0.1)
+			ratezz = GAMESTATE:GetSongOptionsObject(0):MusicRate(rate-0.1)
 			MESSAGEMAN:Broadcast("CurrentSongChanged")
 		end
 	end;
@@ -164,6 +95,26 @@ t[#t+1] = LoadFont("Common Normal") .. {
 	SetCommand=function(self)
 		if update and msd_exists(_) then
 			self:settext("Msd Vers: "..GetMsdData("V"))
+		else
+			self:settext("")
+		end
+	end;
+	CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");
+	CurrentStepsP1ChangedMessageCommand=cmd(queuecommand,"Set");
+};
+
+t[#t+1] = LoadFont("Common Normal") .. {
+	Name="Override";
+	InitCommand=cmd(xy,196,SCREEN_BOTTOM-224;visible,true;halign,0;zoom,0.35;valign,0;maxwidth,capWideScale(get43size(360),360)/capWideScale(get43size(0.45),0.45));
+	BeginCommand=cmd(queuecommand,"Set");
+	SetCommand=function(self)
+		if update and msd_exists(_) and themeConfig:get_data().global.ShowOverrideMargins then
+			local ovr = GetMsdData("ovr")
+			if tonumber(ovr)==0 then
+				self:settext("")
+			else
+				self:settext("Override: "..ovr.."%")
+			end
 		else
 			self:settext("")
 		end

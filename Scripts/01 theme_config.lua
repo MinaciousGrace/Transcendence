@@ -10,9 +10,9 @@ local defaultConfig = {
 		HelpMenu = false,
 		ScoreBoardNag = false,
 		MeasureLines = false,
-		ProgressBar = 1, -- 0 = off, 1 bottom , 2 top
+		ProgressBar = 2, -- 0 = off, 1 bottom , 2 top
 		Transcended = 0,
-		versupdate = 0
+		ShowOverrideMargins = false,
 	},
 	NPSDisplay = {
 		--Enabled = true, -- Player Controlled
@@ -27,6 +27,7 @@ local defaultConfig = {
 		ScoreBoardEnabled = true,
 		ScoreBoardMaxEntry = 10,
 		SongBGType = 1, -- 1 = song bg, 2 = grade+common, 3 = grade only
+		UseMSDValuesForEval = false
 	},
 	color ={
 		main = "#00AEEF"

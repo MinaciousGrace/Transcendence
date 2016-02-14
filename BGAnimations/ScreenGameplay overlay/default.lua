@@ -15,5 +15,9 @@ t[#t+1] = LoadActor("npscalc")
 t[#t+1] = LoadFont("Common Normal")..{
 	InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_BOTTOM-10;zoom,0.35;settext,GAMESTATE:GetSongOptions('ModsLevel_Song');shadowlength,1;);
 }
+t[#t+1] = Def.Actor{
+ Name="StreamInfoUpdater1";
+	MESSAGEMAN:Broadcast("UpdateStreamInfo",{Source="Gameplay"})
+};
 
 return t

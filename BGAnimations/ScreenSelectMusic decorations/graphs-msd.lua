@@ -18,15 +18,6 @@ local t = Def.ActorFrame{
 	PlayerJoinedMessageCommand=cmd(queuecommand,"Set");
 };
 
-local function msd_exists()
-  local song = GAMESTATE:GetCurrentSong()
-  if song == nil then
-	return false
-  end
-  local chart = GAMESTATE:GetHardestStepsDifficulty()..GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
-  return FILEMAN:DoesFileExist(song:GetSongDir().."msd/"..chart)
-end
-
 local frameX = 10
 local frameY = 45
 local frameWidth = capWideScale(320,400)
@@ -86,7 +77,7 @@ if GAMESTATE:GetNumPlayersEnabled() == 1 then
 		BeginCommand=cmd(queuecommand,"Set");
 		SetCommand=function(self)
 			if update and msd_exists() then
-        local chart = string.gsub(GAMESTATE:GetHardestStepsDifficulty(),"Difficulty_","")
+			local chart = string.gsub(GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()):GetDifficulty(),"Difficulty_","")
 				self:settext(chart);
 			end;
 		end;
@@ -99,7 +90,7 @@ if GAMESTATE:GetNumPlayersEnabled() == 1 then
 		Name="PND";
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
-			local chart = GAMESTATE:GetHardestStepsDifficulty()..GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
+			local chart = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()):GetDifficulty()..GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
 			if update and msd_exists() then
 					self:visible(true);
 					self:Load(song:GetSongDir().."msd/"..chart.."/diff.png");
@@ -123,7 +114,7 @@ if GAMESTATE:GetNumPlayersEnabled() == 1 then
 		Name="Chord Density";
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
-      local chart = GAMESTATE:GetHardestStepsDifficulty()..GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
+			local chart = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()):GetDifficulty()..GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
 			if update and msd_exists() then
 					self:visible(true);
 					self:Load(song:GetSongDir().."msd/"..chart.."/cd.png");
@@ -147,7 +138,7 @@ if GAMESTATE:GetNumPlayersEnabled() == 1 then
 		Name="Stamina";
 		SetCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
-      local chart = GAMESTATE:GetHardestStepsDifficulty()..GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
+			local chart = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()):GetDifficulty()..GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
 			if update and msd_exists() then
 					self:visible(true);
 					self:Load(song:GetSongDir().."msd/"..chart.."/stam.png");

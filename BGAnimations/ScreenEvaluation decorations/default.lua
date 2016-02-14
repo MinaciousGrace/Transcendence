@@ -57,6 +57,46 @@ local function ComboGraph( pn )
 	return t;
 end;
 
+local function msd_exists()
+  local song = GAMESTATE:GetCurrentSong()
+  if song == nil then
+	return false
+  end
+  local chart = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()):GetDifficulty()..GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
+  return FILEMAN:DoesFileExist(song:GetSongDir().."msd/"..chart)
+end
+
+local function GetMsdData(x)
+  local sg = tostring(x)
+  
+  local s = GAMESTATE:GetCurrentSong()
+  local c = GAMESTATE:GetCurrentSteps(GAMESTATE:GetMasterPlayerNumber()):GetDifficulty()..GAMESTATE:GetCurrentStyle():ColumnsPerPlayer()
+  local p = tostring(s:GetSongDir().."msd/"..c.."/msd.txt")
+  local f = RageFileUtil.CreateRageFile()
+  
+  if not f:Open(p,1) then
+	f:destroy()
+	return nil
+	end
+	
+	local d = f:Read()
+	f:Close()
+	f:destroy()
+    
+  local rate = getrate()
+  
+  if sg == "V" then
+  local v = string.sub(d,string.find(d,sg)+1,string.find(d,sg)+4)
+  return v
+  end
+  
+  s = string.find(d,"R_"..rate.."_SG_"..sg)
+  local f = string.find(d,":",s)-1
+  o = string.sub(d,s,f)
+  return o 
+end
+
+
 --ScoreBoard
 local judges = {'TapNoteScore_W1','TapNoteScore_W2','TapNoteScore_W3','TapNoteScore_W4','TapNoteScore_W5','TapNoteScore_Miss'}
 
@@ -89,23 +129,46 @@ function scoreBoard(pn,position)
 
 	t[#t+1] = LoadFont("Common Large")..{
 		InitCommand=cmd(xy,18,frameY;zoom,0.75;halign,0;valign,1;maxwidth,80);
-		BeginCommand=cmd(glowshift;effectcolor1,color("1,1,1,0.05");effectcolor2,color("1,1,1,0");effectperiod,2;queuecommand,"Set");
-		SetCommand=function(self) 
-			local steps = GAMESTATE:GetCurrentSteps(pn)
-			local diff = steps:GetMeter()
-			self:settext(diff)
-			if diff < 20 then
-				self:diffuse(getVividDifficultyColor('Difficulty_Beginner'))
-			elseif diff < 35 then
-				self:diffuse(getVividDifficultyColor('Difficulty_Easy'))
-			elseif diff < 50 then
-				self:diffuse(getVividDifficultyColor('Difficulty_Medium'))
-			elseif diff < 65 then
-				self:diffuse(getVividDifficultyColor('Difficulty_Hard'))
-			else
-				self:diffuse(getVividDifficultyColor('Difficulty_Challenge'))
+			BeginCommand=cmd(queuecommand,"Set");
+			SetCommand=function(self)
+				local meter
+				if msd_exists() and themeConfig:get_data().eval.UseMSDValuesForEval then
+					local score = getCurScoreST(pn,0)
+					local maxScore = getMaxScoreST(pn,0)
+					local dfr = (score/maxScore)*100 - math.floor((score/maxScore)*100)
+					local sc = math.floor((score/maxScore)*100)
+					if sc < 90 then
+						meter = 0
+					elseif sc < 97 then
+						local d1 = split(GetMsdData(sc),"%,")
+						local d2 = split(GetMsdData(sc+1),"%,")
+						meter = tonumber(d1[2]) + dfr*(tonumber(d2[2]) - tonumber(d1[2]))
+					else
+						local ds = split(GetMsdData(97),"%,")
+						meter = tonumber(ds[2])
+					end
+				else
+					local steps = GAMESTATE:GetCurrentSteps(PLAYER_1);
+					meter = steps:GetMeter()
+				end
+				self:settext(string.format("%05.2f",meter))
+				if meter < 15 then
+					self:diffuse(getVividDifficultyColor('Difficulty_Beginner'))
+				elseif meter < 22 then
+					self:diffuse(getVividDifficultyColor('Difficulty_Easy'))
+				elseif meter < 28 then
+					self:diffuse(getVividDifficultyColor('Difficulty_Medium'))
+				elseif meter < 33 then
+					self:diffuse(getVividDifficultyColor('Difficulty_Hard'))
+				else
+					self:diffuse(getVividDifficultyColor('Difficulty_Challenge'))
+				end;
 			end;
-		end;
+		};
+		
+	t[#t+1] = LoadFont("Common Normal")..{
+		InitCommand=cmd(xy,18,frameY-33;zoom,0.25;halign,0);
+		BeginCommand=cmd(settext,"Msd Vers: "..GetMsdData("V"))
 	};
 
 	t[#t+1] = LoadFont("Common Normal")..{
@@ -148,6 +211,17 @@ function scoreBoard(pn,position)
 		end;
 	};
 
+	t[#t+1] = LoadFont("Common Large") .. {
+		InitCommand=cmd(xy,283,160;halign,1;zoom,0.45;shadowlength,1;maxwidth,120;diffuse,getMainColor('positive'));
+		BeginCommand=cmd(queuecommand,"Set");
+		SetCommand=function(self)
+			local steps = GAMESTATE:GetCurrentSteps(PLAYER_1);
+			local diff = getDifficulty(steps:GetDifficulty())
+			self:settext(diff)
+			self:diffuse(getDifficultyColor(GetCustomDifficulty(steps:GetStepsType(),steps:GetDifficulty())))
+		end;
+	};
+	
 	t[#t+1] = LoadFont("Common Normal")..{
 		InitCommand=cmd(xy,frameX+50+(frameWidth-80)+10,frameY+13;zoom,0.30;maxwidth,20/0.3);
 		BeginCommand=cmd(queuecommand,"Set");
