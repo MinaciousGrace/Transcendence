@@ -8,10 +8,14 @@ toward a gameplay-optimized setup
 Transcendence features a built in standardized difficulty system (Msd) that estimates
 difficulty for files in supported packs as well as providing other meta-information on 
 simfiles. Ratings across similar file types will be the most accurate to players with polarized
-strengths. 
+strengths. This is a spread/keyboard play focused system and will bear very little relevance to 
+pad or index playstyles. It is also currently only being tuned for 16+ difficulty files, it's
+inadvisable at the current moment to use the system to guide novice or beginner experience.
+
 
 For a list of supported packs check the Msd Data dir.
-
+R31A looks to be a relatively robust calc at first glance. If it holds up under further scrutiny
+I'll add another couple dozen packs to the data dir while refining things (within the next day or so).
 
 The following are not supported to varying degrees of breaky-ness:
 
