@@ -17,10 +17,7 @@ t[#t+1] = LoadFont("Common Normal")..{
 }
 t[#t+1] = Def.Actor{
  Name="StreamInfoUpdater1";
- local song = GAMESTATE:GetCurrentSong()
-	if song then
 	MESSAGEMAN:Broadcast("UpdateStreamInfo",{Source="Gameplay"})
-	end
 };
 
 return t
